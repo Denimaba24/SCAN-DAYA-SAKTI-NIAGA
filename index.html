@@ -786,6 +786,7 @@
 
       let isScanning = false;
       let currentCam = "environment";
+      let lastErrorTime = 0;
       let isTorchOn = false;
       let streamTrack = null;
       let scanLoopFrame = null;
@@ -865,6 +866,7 @@
           : "SW MODE";
       }
 
+      // KEMBALI KE MODE RESPONSIF MAKSIMAL (TRY_HARDER NYALA, 0 DELAY)
       function getZXingHints() {
         try {
           return new Map([
@@ -991,9 +993,29 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            let constraints = { video: { facingMode: currentCam } };
-            const stream =
-              await navigator.mediaDevices.getUserMedia(constraints);
+            // MENGGUNAKAN PENGATURAN KAMERA ORIGINAL AGAR SUPPORT SEMUA DEVICE TERMASUK IPHONE
+            let constraints = {
+              video: {
+                facingMode: currentCam,
+                width: { ideal: 1080 },
+                height: { ideal: 1080 },
+              },
+            };
+
+            let stream;
+            try {
+              let advConstraints = JSON.parse(JSON.stringify(constraints));
+              if (!isIOS)
+                advConstraints.video.advanced = [{ focusMode: "continuous" }];
+              stream =
+                await navigator.mediaDevices.getUserMedia(advConstraints);
+            } catch (e) {
+              // Fallback yang aman jika device menolak spesifikasi (iPhone Safari / Android tertentu)
+              stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: currentCam },
+              });
+            }
+
             video.srcObject = stream;
             streamTrack = stream.getVideoTracks()[0];
             await video.play();
@@ -1032,7 +1054,7 @@
           } catch (err) {
             Swal.fire(
               "Error",
-              "Kamera gagal dimuat. Akses kamera mungkin diblokir.",
+              "Kamera gagal dimuat. Izinkan akses kamera dan pastikan Anda menggunakan HTTPS.",
               "error",
             );
             toggleScan();
@@ -1041,15 +1063,19 @@
       }
 
       function processBarcodeDetected(code, format) {
-        // === LOGIKA PENGABAIAN OTOMATIS (HANYA DETEKSI 1 KALI) ===
-        // Jika barcode sudah pernah di-scan dan ada di database,
-        // Kamera akan DIAM SAJA secara total (tanpa bunyi error)
-        // Memungkinkan Anda langsung pindah ke barang/barcode berikutnya dengan mulus.
+        // JIKA BARCODE KEMBAR: MUNYIKAN NOTIF ERROR SETIAP 2 DETIK
         if (scannedCodesSet.has(code)) {
+          const now = Date.now();
+          // Pembatas waktu agar suara error tidak macet/spam berlebihan
+          if (now - lastErrorTime > 2000) {
+            triggerErrorFeedback();
+            Toast.fire({ icon: "error", title: "Barcode sudah ada!" });
+            lastErrorTime = now;
+          }
           return;
         }
 
-        // Jika barcode baru, simpan datanya dan beri bunyi
+        // JIKA BARCODE BARU: SIMPAN DATA DAN BUNYIKAN BEEP SUKSES
         scannedCodesSet.add(code);
         simpanData(code, format);
       }
