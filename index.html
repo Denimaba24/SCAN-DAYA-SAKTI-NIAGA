@@ -802,6 +802,7 @@
         color: "#fff",
       });
 
+      // Fitur Reset Hari Ini (00:00)
       let lastCheckedDay = new Date().getDate();
       setInterval(() => {
         const currentDay = new Date().getDate();
@@ -866,12 +867,10 @@
           : "SW MODE";
       }
 
-      // KEMBALI KE MODE RESPONSIF MAKSIMAL (TRY_HARDER NYALA, 0 DELAY)
       function getZXingHints() {
         try {
           return new Map([
-            [ZXing.DecodeHintType.TRY_HARDER, true],
-            [ZXing.DecodeHintType.ASSUME_GS1, true],
+            [ZXing.DecodeHintType.TRY_HARDER, false], // Mempercepat deteksi
             [
               ZXing.DecodeHintType.POSSIBLE_FORMATS,
               [
@@ -897,37 +896,56 @@
         if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
+      // ==========================================
+      // LOGIKA PARSING PINTAR SESUAI GAMBAR BARCODE
+      // ==========================================
       function parsePayloadToFields(text) {
         const raw = (text || "").trim();
         if (!raw) return null;
-        if (raw.startsWith("86") && raw.length >= 24) {
+
+        // Cek apakah format sesuai pabrik Daya Sakti Niaga (Berawalan 86 dan panjang tepat 34 digit)
+        if (raw.startsWith("86") && raw.length === 34) {
           try {
-            const p_str = raw.slice(-4),
-              w_str = raw.slice(-9, -4),
-              l_str = raw.slice(-12, -9),
-              prefix = raw.slice(2, -16);
-            const golongan = prefix.replace(/^0+/, "") || "-";
-            const p_indo = parseInt(l_str, 10),
-              l_indo = parseInt(w_str, 10) / 10,
-              potongan = parseInt(p_str, 10);
+            // Kita potong berdasarkan susunan pasti dari belakang untuk hindari error ghost read
+            const tail = raw.slice(-16);
+            const ext = tail.slice(0, 4); // 0085
+            const p_str = tail.slice(4, 7); // 265
+            const l_str = tail.slice(7, 12); // 00225
+            const pot_str = tail.slice(12, 16); // 0024
+
+            const middle = raw.slice(2, -16); // "000000000021270A"
+            let golongan = middle.replace(/^0+/, "");
+            if (!golongan) golongan = "-";
+
+            const p_indo = parseInt(p_str, 10);
+            const l_indo = parseInt(l_str, 10) / 10;
+            const potongan = parseInt(pot_str, 10);
             const persegi = (p_indo * l_indo * potongan) / 10000;
-            if (!isNaN(p_indo) && !isNaN(l_indo) && !isNaN(potongan)) {
-              return {
-                panjang: p_indo,
-                lebar: l_indo,
-                potongan: potongan,
-                persegi: persegi.toFixed(2),
-                golongan: golongan,
-              };
-            }
+
+            // Gabungkan angka 085 agar muncul di tabel (Misal: 21270A (085))
+            const extNum = parseInt(ext, 10);
+            const golonganDisplay =
+              extNum > 0
+                ? `${golongan} (${extNum.toString().padStart(3, "0")})`
+                : golongan;
+
+            return {
+              panjang: p_indo,
+              lebar: l_indo,
+              potongan: potongan,
+              persegi: persegi.toFixed(2),
+              golongan: golonganDisplay,
+            };
           } catch (e) {}
         }
+
+        // JIKA BARCODE BEDA FORMAT (Menghindari muncul error/dimensi blank)
         return {
           panjang: "-",
           lebar: "-",
           potongan: "-",
           persegi: "-",
-          golongan: "-",
+          golongan: raw,
         };
       }
 
@@ -951,6 +969,9 @@
         }
       }
 
+      // ==========================================
+      // KAMERA PALING RESPONSIF & AMAN SEMUA HP
+      // ==========================================
       async function toggleScan() {
         const btn = document.getElementById("btnAction");
         const placeholder = document.getElementById("placeholderMsg");
@@ -993,7 +1014,7 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // MENGGUNAKAN PENGATURAN KAMERA ORIGINAL AGAR SUPPORT SEMUA DEVICE TERMASUK IPHONE
+            // Konfigurasi Default original
             let constraints = {
               video: {
                 facingMode: currentCam,
@@ -1010,7 +1031,7 @@
               stream =
                 await navigator.mediaDevices.getUserMedia(advConstraints);
             } catch (e) {
-              // Fallback yang aman jika device menolak spesifikasi (iPhone Safari / Android tertentu)
+              // Fallback sangat aman untuk semua browser/iPhone lama
               stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: currentCam },
               });
@@ -1054,7 +1075,7 @@
           } catch (err) {
             Swal.fire(
               "Error",
-              "Kamera gagal dimuat. Izinkan akses kamera dan pastikan Anda menggunakan HTTPS.",
+              "Kamera gagal dimuat. Pastikan izin aktif dan link menggunakan HTTPS.",
               "error",
             );
             toggleScan();
@@ -1063,11 +1084,11 @@
       }
 
       function processBarcodeDetected(code, format) {
-        // JIKA BARCODE KEMBAR: MUNYIKAN NOTIF ERROR SETIAP 2 DETIK
+        // FITUR PERINGATAN BUNYI SAAT BARCODE KEMBAR
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
-          // Pembatas waktu agar suara error tidak macet/spam berlebihan
           if (now - lastErrorTime > 2000) {
+            // Bunyi error setiap 2 detik jika tetap menatap barcode yang sama
             triggerErrorFeedback();
             Toast.fire({ icon: "error", title: "Barcode sudah ada!" });
             lastErrorTime = now;
@@ -1075,7 +1096,7 @@
           return;
         }
 
-        // JIKA BARCODE BARU: SIMPAN DATA DAN BUNYIKAN BEEP SUKSES
+        // BARCODE BARU TERSCAN
         scannedCodesSet.add(code);
         simpanData(code, format);
       }
