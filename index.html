@@ -11,7 +11,7 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>Scanner - PT. Daya Sakti Niaga</title>
+    <title>Scanner Cepat - PT. Daya Sakti Niaga</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
@@ -519,7 +519,6 @@
         color: #fca5a5;
         margin-top: 10px;
       }
-
       .filter-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -595,7 +594,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> SCAN YAA GANTENGGS
+            <i class="fas fa-bolt"></i> FAST SCANNER MODE
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -723,8 +722,8 @@
           </div>
           <div class="filter-grid">
             <div class="input-group">
-              <label>Dari Tanggal</label>
-              <input
+              <label>Dari Tanggal</label
+              ><input
                 type="date"
                 class="form-control"
                 id="start"
@@ -732,8 +731,8 @@
               />
             </div>
             <div class="input-group">
-              <label>Sampai Tanggal</label>
-              <input
+              <label>Sampai Tanggal</label
+              ><input
                 type="date"
                 class="form-control"
                 id="end"
@@ -742,8 +741,8 @@
             </div>
           </div>
           <div class="input-group">
-            <label>Pencarian Umum</label>
-            <input
+            <label>Pencarian Umum</label
+            ><input
               type="search"
               class="form-control"
               id="search"
@@ -839,8 +838,7 @@
               margin-bottom: 24px;
             "
           >
-            Laporan Excel akan memisahkan data Barcode 1, 2, dan 3 ke Sheet yang
-            berbeda secara otomatis.
+            Laporan Excel memisahkan data ke Sheet berbeda otomatis.
           </p>
           <label
             style="
@@ -851,7 +849,7 @@
               margin-bottom: 12px;
               text-transform: uppercase;
             "
-            >Export Khusus Hari Ini</label
+            >Export Hari Ini</label
           >
           <div class="export-grid">
             <button
@@ -878,7 +876,7 @@
               margin-bottom: 12px;
               text-transform: uppercase;
             "
-            >Export Master Database</label
+            >Export Master</label
           >
           <div class="export-grid">
             <button
@@ -909,7 +907,7 @@
             onclick="hapusSemuaData()"
           >
             <i class="fas fa-triangle-exclamation"></i>
-            <div><strong>Reset Total Memori Aplikasi</strong></div>
+            <div><strong>Reset Total Data</strong></div>
           </button>
         </div>
       </div>
@@ -962,11 +960,9 @@
           if (
             document.getElementById("view-scan").classList.contains("active") &&
             window.scrollY === 0
-          ) {
+          )
             touchStartY = e.touches[0].clientY;
-          } else {
-            touchStartY = 0;
-          }
+          else touchStartY = 0;
         },
         { passive: true },
       );
@@ -988,21 +984,17 @@
                 timer: 1000,
                 background: "rgba(15, 23, 42, 0.95)",
                 color: "#fff",
-                didOpen: () => {
-                  Swal.showLoading();
-                },
-              }).then(() => {
-                location.reload();
-              });
+                didOpen: () => Swal.showLoading(),
+              }).then(() => location.reload());
             }
           }
         },
         { passive: true },
       );
-
-      window.addEventListener("touchend", function () {
-        pullIndicator.style.opacity = "0";
-      });
+      window.addEventListener(
+        "touchend",
+        () => (pullIndicator.style.opacity = "0"),
+      );
 
       function switchPage(pageId, navElement) {
         if (pageId !== "view-scan" && isScanning) toggleScan();
@@ -1025,20 +1017,8 @@
       let nativeDetector = null;
       let zxingReader = null;
 
-      // Diperluas untuk QR Code dan DataMatrix demi responsivitas ekstra
-      const formatList = [
-        "code_128",
-        "code_39",
-        "code_93",
-        "ean_13",
-        "ean_8",
-        "upc_a",
-        "upc_e",
-        "itf",
-        "codabar",
-        "qr_code",
-        "data_matrix",
-      ];
+      // FORMAT DIBATASI HANYA UNTUK KECEPATAN (Code 128 & Code 39)
+      const formatList = ["code_128", "code_39"];
 
       if (hasNativeScanner && !isIOS) {
         document.getElementById("engineBadge").innerText = "HW ACCEL";
@@ -1046,24 +1026,16 @@
       } else {
         document.getElementById("engineBadge").innerText = isIOS
           ? "IOS PRO"
-          : "SW MODE";
+          : "SW FAST";
       }
 
+      // ENGINE ZXING DIOPTIMALKAN UNTUK KECEPATAN MAXIMAL
       function getZXingHints() {
         try {
           return new Map([
-            [ZXing.DecodeHintType.TRY_HARDER, true],
             [
               ZXing.DecodeHintType.POSSIBLE_FORMATS,
-              [
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODE_39,
-                ZXing.BarcodeFormat.ITF,
-                ZXing.BarcodeFormat.EAN_13,
-                ZXing.BarcodeFormat.UPC_A,
-                ZXing.BarcodeFormat.QR_CODE,
-                ZXing.BarcodeFormat.DATA_MATRIX,
-              ],
+              [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.CODE_39],
             ],
           ]);
         } catch (e) {
@@ -1077,9 +1049,7 @@
         if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
-      // MASTER DB SUPER AKURAT (Mengakomodasi O dan 0 dari pantulan scan)
       const DEFAULT_MASTER = {
-        // Barcode 2 Data Valid
         "15931035O5404312800401050003": {
           jenisBarcode: "Barcode 2",
           panjang: 305,
@@ -1096,8 +1066,6 @@
           persegi: "10.25 sm",
           golongan: "10-014085 (3)",
         },
-
-        // Barcode 3 Data Valid
         "11111916000503202881401070011": {
           jenisBarcode: "Barcode 3",
           panjang: 280,
@@ -1198,27 +1166,23 @@
           }
           return;
         }
-
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
           simpanData(code, format, b1Data);
           return;
         }
-
         let b2Lama = parseBarcode20Digit(code);
         if (b2Lama) {
           scannedCodesSet.add(code);
           simpanData(code, format, b2Lama);
           return;
         }
-
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
-
         if (code.length >= 15) {
           promptNewMasterData(code, format);
         }
@@ -1226,24 +1190,15 @@
 
       function promptNewMasterData(code, format) {
         if (isScanning) toggleScan();
-
         Swal.fire({
           title: "Master Data Baru!",
-          html: `
-            <div style="font-size:0.85rem; color:#a78bfa; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
-            <select id="m-jenis" class="swal2-select" style="width: 90%; font-size:14px; margin-bottom:8px; padding:10px;">
-              <option value="Barcode 3">Ini Barcode 3</option>
-              <option value="Barcode 2">Ini Barcode 2</option>
-            </select>
+          html: `<div style="font-size:0.85rem; color:#a78bfa; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja.</div>
+            <select id="m-jenis" class="swal2-select" style="width: 90%; font-size:14px; margin-bottom:8px; padding:10px;"><option value="Barcode 3">Ini Barcode 3</option><option value="Barcode 2">Ini Barcode 2</option></select>
             <input id="m-gol" class="swal2-input" placeholder="Golongan (Cth: 10-014085 (3))" style="width: 90%; font-size:14px; margin-bottom:8px;">
             <input id="m-p" type="number" class="swal2-input" placeholder="Panjang (Cth: 305)" style="width: 90%; font-size:14px; margin-bottom:8px;">
             <input id="m-l" type="number" step="0.1" class="swal2-input" placeholder="Lebar (Cth: 14)" style="width: 90%; font-size:14px; margin-bottom:8px;">
             <input id="m-pot" type="number" class="swal2-input" placeholder="Potongan (Cth: 24)" style="width: 90%; font-size:14px; margin-bottom:8px;">
-            <select id="m-unit" class="swal2-select" style="width: 90%; font-size:14px; margin-bottom:8px; padding:10px;">
-              <option value="sm">Satuan: sm</option>
-              <option value="m2">Satuan: m2</option>
-            </select>
-          `,
+            <select id="m-unit" class="swal2-select" style="width: 90%; font-size:14px; margin-bottom:8px; padding:10px;"><option value="sm">Satuan: sm</option><option value="m2">Satuan: m2</option></select>`,
           background: "rgba(15, 23, 42, 0.95)",
           color: "#fff",
           showCancelButton: true,
@@ -1280,11 +1235,8 @@
             scannedCodesSet.add(code);
             simpanData(code, format, res.value);
           }
-          if (
-            document.getElementById("view-scan").classList.contains("active")
-          ) {
+          if (document.getElementById("view-scan").classList.contains("active"))
             setTimeout(toggleScan, 500);
-          }
         });
       }
 
@@ -1330,12 +1282,12 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // Resolusi video tinggi diwajibkan demi responsivitas baca gambar padat
+            // RESOLUSI IDEAL UNTUK KECEPATAN (720p / 1280x720)
             let constraints = {
               video: {
                 facingMode: { ideal: currentCam },
-                width: { ideal: 1920 },
-                height: { ideal: 1080 },
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
               },
             };
             let stream;
@@ -1384,12 +1336,13 @@
                 setTimeout(() => {
                   if (isScanning)
                     scanLoopFrame = requestAnimationFrame(detectLoop);
-                }, 10);
+                }, 5);
               };
               scanLoopFrame = requestAnimationFrame(detectLoop);
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 10;
+              // DELAY DINOLKAN AGAR SECEPAT KILAT
+              zxingReader.timeBetweenDecodingAttempts = 0;
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
@@ -1561,8 +1514,7 @@
       function formatTgl(tgl) {
         if (!tgl || tgl === "-") return "-";
         const p = tgl.split("-");
-        if (p.length === 3) return `${p[2]}/${p[1]}/${p[0].substring(2)}`;
-        return tgl;
+        return p.length === 3 ? `${p[2]}/${p[1]}/${p[0].substring(2)}` : tgl;
       }
 
       function createTableRows(dataArray, tableIdStr) {
@@ -1574,7 +1526,6 @@
         }
         dataArray.forEach((i, idx) => {
           const tr = document.createElement("tr");
-          // Format potongan otomatis disisipkan 'pcs' persis seperti instruksi
           const isDb = tableIdStr.includes("Db");
           let html = `<td>${idx + 1}</td><td><span class="badge">${i.kode.substring(0, 10)}...</span></td><td><b>${i.golongan}</b></td><td>${i.panjang}</td><td>${i.lebar}</td><td>${i.potongan}pcs</td><td>${i.persegi}</td>`;
           if (isDb) html += `<td>${formatTgl(i.tanggal)}</td>`;
@@ -1666,7 +1617,7 @@
       function hapusSemuaData() {
         Swal.fire({
           title: "RESET TOTAL?",
-          text: "Seluruh data (termasuk memori master auto-learn dan error sebelumnya) akan dihapus total!",
+          text: "Seluruh data akan dihapus total!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "var(--danger)",
