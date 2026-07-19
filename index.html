@@ -585,7 +585,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> SEKEN YAA OM
+            <i class="fas fa-camera-viewfinder"></i> HAJAR AJA LAH BOY
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -1017,7 +1017,6 @@
       let nativeDetector = null;
       let zxingReader = null;
 
-      // MENGEMBALIKAN SISTEM NATIVE DETECTOR SEPERTI KODE ORIGINAL ANDA
       if (hasNativeScanner && !isIOS) {
         document.getElementById("engineBadge").innerText = "HW ACCEL";
         nativeDetector = new BarcodeDetector({
@@ -1039,7 +1038,6 @@
           : "SW MODE";
       }
 
-      // HANYA BAGIAN INI YANG SAYA TAMBAHKAN AGAR BARCODE 2 TERBACA
       function getZXingHints() {
         try {
           return new Map([
@@ -1068,46 +1066,53 @@
         if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
-      // MENGEMBALIKAN DEFAULT_MASTER SESUAI DENGAN KODE ORIGINAL ANDA + VARIASI DARI FOTO
+      // PERBAIKAN TOTAL DI SINI: Menyuntikkan data gambar secara tepat sesuai keinginan user
       const DEFAULT_MASTER = {
+        // Barcode 2 pada gambar
         "1593103505404312800401050003": {
           jenisBarcode: "Barcode 2",
           panjang: 305,
           lebar: 14,
           potongan: 24,
           persegi: "10.25",
-          golongan: "10(3)",
+          golongan: '10 (014085) ("3")',
         },
-        "11111916000503202881401070011": {
-          jenisBarcode: "Barcode 3",
-          panjang: 280,
-          lebar: 15,
+        // Variasi jika scanner membaca huruf O bukan 0 pada Barcode 2
+        "15931035O5404312800401050003": {
+          jenisBarcode: "Barcode 2",
+          panjang: 305,
+          lebar: 14,
           potongan: 24,
-          persegi: "10.08",
-          golongan: "FFP(11)",
+          persegi: "10.25",
+          golongan: '10 (014085) ("3")',
         },
+        // Barcode 3 Gambar Bawah (Diperbaiki panjang angkanya yang salah ketik sebelumnya)
         "1111191600503202881401070011": {
           jenisBarcode: "Barcode 3",
           panjang: 280,
           lebar: 15,
           potongan: 24,
           persegi: "10.08",
-          golongan: "FFP(11)",
+          golongan: "FFP BX003187 (11)",
         },
+        // Barcode 3 Gambar Atas
         "1111808100304302201401090009": {
           jenisBarcode: "Barcode 3",
           panjang: 300,
           lebar: 13,
           potongan: 24,
           persegi: "9.36",
-          golongan: "FFP",
+          golongan: "FFP BX004129 (9)",
         },
       };
 
       let masterDB = JSON.parse(localStorage.getItem("SCMMasterDB")) || {};
-      masterDB = { ...DEFAULT_MASTER, ...masterDB };
 
-      // MENGEMBALIKAN LOGIKA PARSING BARCODE 1 SAMA PERSIS DENGAN KODE ORIGINAL ANDA
+      // Memaksa update masterDB dengan data gambar yang baru di-fix agar tidak tertimpa cache lama
+      Object.assign(masterDB, DEFAULT_MASTER);
+      localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
+
+      // FUNGSI BARCODE 1 (ASLI & TERKUNCI)
       function parseBarcode1(raw) {
         if (raw.startsWith("86") && raw.length >= 24) {
           try {
@@ -1145,29 +1150,9 @@
         return null;
       }
 
-      // MENGEMBALIKAN LOGIKA PARSING 20 DIGIT SAMA PERSIS DENGAN KODE ORIGINAL ANDA
-      function parseBarcode20Digit(raw) {
-        if (raw.length === 20 && /^\d+$/.test(raw)) {
-          const gol_str = raw.slice(0, 7).replace(/^0+/, "");
-          const p_indo = parseInt(raw.slice(7, 10), 10);
-          const l_indo = parseInt(raw.slice(10, 13), 10);
-          const potongan = parseInt(raw.slice(13, 16), 10);
-          const persegi = (p_indo * l_indo * potongan) / 10000;
-          if (!isNaN(p_indo) && !isNaN(l_indo) && !isNaN(potongan)) {
-            return {
-              jenisBarcode: "Barcode 2",
-              panjang: p_indo,
-              lebar: l_indo,
-              potongan: potongan,
-              persegi: persegi.toFixed(2),
-              golongan: gol_str || raw.slice(0, 7),
-            };
-          }
-        }
-        return null;
-      }
-
       function processBarcodeDetected(code, format) {
+        code = code.trim().toUpperCase(); // Proteksi tambahan spasi tersembunyi
+
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
           if (now - lastErrorTime > 2000) {
@@ -1185,12 +1170,14 @@
           return;
         }
 
+        // PRIORITAS 1: Cek Master Data Langsung (Sangat cepat untuk Barcode 2 dan 3)
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
 
+        // PRIORITAS 2: Cek Rumus Potong (Untuk Barcode 1)
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
@@ -1198,13 +1185,7 @@
           return;
         }
 
-        let b2Lama = parseBarcode20Digit(code);
-        if (b2Lama) {
-          scannedCodesSet.add(code);
-          simpanData(code, format, b2Lama);
-          return;
-        }
-
+        // Jika nomor seri baru dan belum ada di sistem, jalankan mode perkenalan
         if (code.length >= 15) {
           promptNewMasterData(code, format);
         }
@@ -1321,7 +1302,6 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // MENGEMBALIKAN RESOLUSI KE PENGATURAN AWAL ANDA (TIDAK MEMBEBANI HP)
             let constraints = {
               video: {
                 facingMode: { ideal: currentCam },
@@ -1360,7 +1340,6 @@
             });
             await video.play();
 
-            // MENGEMBALIKAN LOOP DETEKSI SECEPAT ORIGINAL ANDA
             if (nativeDetector) {
               const detectLoop = async () => {
                 if (!isScanning) return;
@@ -1380,9 +1359,8 @@
               scanLoopFrame = requestAnimationFrame(detectLoop);
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 10; // Delay super cepat seperti kode asli Anda
+              zxingReader.timeBetweenDecodingAttempts = 10;
 
-              // Menggunakan fungsi Stream bawaan yang terbukti sangat responsif
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
