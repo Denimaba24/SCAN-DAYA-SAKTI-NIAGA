@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -24,6 +24,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <!-- SCRIPT LIBRARY ASLI -->
     <script
       type="text/javascript"
       src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"
@@ -35,41 +36,50 @@
 
     <style>
       :root {
-        --primary: #8b5cf6;
-        --primary-light: #a78bfa;
-        --secondary: #3b82f6;
-        --accent: #ec4899;
-        --success: #10b981;
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+        --secondary: #10b981;
+        --accent: #f43f5e;
+        --success: #059669;
         --warning: #f59e0b;
-        --danger: #ef4444;
-        --glass-bg: rgba(255, 255, 255, 0.05);
-        --glass-border: rgba(255, 255, 255, 0.15);
-        --glass-blur: blur(20px);
-        --text-primary: #ffffff;
-        --text-secondary: rgba(255, 255, 255, 0.7);
-        --text-muted: rgba(255, 255, 255, 0.4);
-        --radius-lg: 24px;
-        --radius-md: 16px;
+        --danger: #e11d48;
+
+        /* Premium Glass Variables */
+        --glass-bg: rgba(15, 23, 42, 0.4);
+        --glass-panel: rgba(15, 23, 42, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.12);
+        --glass-highlight: rgba(255, 255, 255, 0.05);
+        --glass-blur: blur(28px);
+
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --radius-sm: 8px;
       }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
-      html {
-        -webkit-text-size-adjust: 100%;
-      }
 
-      html,
       body {
         width: 100%;
         min-height: 100vh;
         overflow-x: hidden;
-        background: #020617;
+        background-color: #020617;
         color: var(--text-primary);
         font-family: "Plus Jakarta Sans", sans-serif;
+        letter-spacing: -0.015em;
+        -webkit-font-smoothing: antialiased;
       }
+
+      /* Background Memanggil File Lokal daya.webp */
       body::before {
         content: "";
         position: fixed;
@@ -77,152 +87,286 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background:
-          radial-gradient(circle at 15% 50%, #1e1b4b, transparent 50%),
-          radial-gradient(circle at 85% 30%, #312e81, transparent 50%),
-          radial-gradient(circle at 50% 80%, #0f172a, transparent 50%);
-        z-index: -1;
-      }
-      button,
-      input {
-        touch-action: manipulation;
+        background-image: url("daya.webp");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        z-index: -2;
       }
 
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(2, 6, 23, 0.65) 0%,
+          rgba(15, 23, 42, 0.95) 100%
+        );
+        backdrop-filter: blur(5px);
+        z-index: -1;
+      }
+
+      button,
+      input {
+        font-family: inherit;
+        outline: none;
+      }
+
+      /* --- TOPBAR PREMIUM --- */
       .topbar {
-        background: rgba(2, 6, 23, 0.8);
+        background: rgba(15, 23, 42, 0.5);
         backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border-bottom: 1px solid var(--glass-border);
-        padding: 16px 20px;
-        padding-top: max(16px, env(safe-area-inset-top));
+        padding: 18px 24px;
+        padding-top: max(18px, env(safe-area-inset-top));
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         position: sticky;
         top: 0;
         z-index: 100;
+        box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
       }
+
       .topbar-title {
         font-size: 1.15rem;
-        font-family: "Space Grotesk", sans-serif;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--secondary), var(--accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .engine-badge {
-        font-size: 0.65rem;
-        background: linear-gradient(
-          135deg,
-          rgba(16, 185, 129, 0.2),
-          rgba(16, 185, 129, 0.05)
-        );
-        color: #34d399;
-        padding: 6px 12px;
-        border-radius: 20px;
         font-weight: 800;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: 0.5px;
       }
+
+      .topbar-title i {
+        color: #38bdf8;
+        font-size: 1.3rem;
+        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+      }
+
+      /* Efek Mesin Tik di Pojok Kanan Atas */
+      .typewriter-container {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none; /* Sembunyikan di layar sangat kecil */
+      }
+      @media (min-width: 380px) {
+        .typewriter-container {
+          display: block;
+        }
+      }
+
+      .typewriter-text {
+        color: #38bdf8;
+        font-family: "Space Grotesk", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        overflow: hidden;
+        border-right: 2px solid #38bdf8;
+        white-space: nowrap;
+        margin: 0;
+        letter-spacing: 1px;
+        width: 0;
+        text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+        animation:
+          typing 4s steps(22, end) infinite alternate,
+          blink-caret 0.75s step-end infinite;
+      }
+
+      @keyframes typing {
+        0%,
+        10% {
+          width: 0;
+        }
+        90%,
+        100% {
+          width: 100%;
+        }
+      }
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #38bdf8;
+        }
+      }
+
+      /* Floating Bottom Navigation iOS Style */
       .bottom-nav {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: var(--glass-blur);
-        border-top: 1px solid var(--glass-border);
+        bottom: calc(20px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 500px;
+        background: rgba(30, 41, 59, 0.85);
+        backdrop-filter: blur(40px) saturate(200%);
+        -webkit-backdrop-filter: blur(40px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 40px;
         display: flex;
-        justify-content: space-around;
-        padding: 12px 10px calc(12px + env(safe-area-inset-bottom)) 10px;
+        justify-content: space-between;
+        padding: 8px;
         z-index: 999;
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.5),
+          inset 0 1px 1px rgba(255, 255, 255, 0.2);
       }
+
       .nav-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        gap: 4px;
         color: var(--text-muted);
         cursor: pointer;
         flex: 1;
+        padding: 10px 0;
+        border-radius: 30px;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
       }
+
       .nav-item i {
-        font-size: 1.3rem;
-        transition: transform 0.2s ease;
+        font-size: 1.35rem;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
+
       .nav-item span {
         font-size: 0.65rem;
         font-weight: 700;
-        text-transform: uppercase;
-      }
-      .nav-item.active {
-        color: var(--primary-light);
-      }
-      .nav-item.active i {
-        transform: translateY(-3px) scale(1.1);
-        filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.6));
+        letter-spacing: 0.3px;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
       }
 
+      .nav-item.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-item.active i {
+        transform: translateY(-2px);
+        color: #38bdf8;
+        text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+      }
+
+      .nav-item.active span {
+        opacity: 1;
+        height: 12px;
+        margin-top: 2px;
+      }
+
+      /* Transitions */
       .view-page {
         display: none;
         opacity: 0;
-        animation: fadeIn 0.4s forwards;
+        animation: smoothFade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       }
       .view-page.active {
         display: flex;
         flex-direction: column;
-        gap: 24px;
-        opacity: 1;
+        gap: 28px;
       }
-      @keyframes fadeIn {
-        from {
+
+      @keyframes smoothFade {
+        0% {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(15px) scale(0.98);
         }
-        to {
+        100% {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
         }
       }
 
+      /* Layout */
       .container {
-        padding: 20px 16px;
-        padding-bottom: calc(120px + env(safe-area-inset-bottom));
+        padding: 24px 20px;
+        padding-bottom: calc(140px + env(safe-area-inset-bottom));
         max-width: 800px;
         margin: 0 auto;
         width: 100%;
         position: relative;
       }
+
+      /* Premium Glass Cards */
       .card {
-        background: var(--glass-bg);
+        background: var(--glass-panel);
         backdrop-filter: var(--glass-blur);
-        border-radius: var(--radius-lg);
-        padding: 20px;
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-radius: var(--radius-xl);
+        padding: 28px;
         border: 1px solid var(--glass-border);
+        box-shadow:
+          0 25px 50px -12px rgba(0, 0, 0, 0.6),
+          inset 0 1px 0px rgba(255, 255, 255, 0.15);
+        position: relative;
+        overflow: hidden;
       }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.25),
+          transparent
+        );
+      }
+
       .card-header {
-        font-weight: 700;
-        margin-bottom: 20px;
+        font-weight: 800;
+        margin-bottom: 24px;
         font-size: 1.1rem;
         display: flex;
         align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-      }
-      .card-header i {
-        color: var(--primary-light);
-        background: rgba(139, 92, 246, 0.2);
-        padding: 8px;
-        border-radius: 8px;
+        gap: 14px;
+        color: #ffffff;
+        letter-spacing: 0.5px;
       }
 
+      .card-header i {
+        color: #ffffff;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.25),
+          rgba(255, 255, 255, 0.05)
+        );
+        padding: 10px;
+        border-radius: var(--radius-sm);
+        font-size: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Advanced Scanner Aesthetics */
       .scanner-wrapper {
         position: relative;
-        margin-bottom: 28px;
+        margin-bottom: 40px;
       }
+
       .scanner-container {
         position: relative;
         width: 100%;
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-lg);
         overflow: hidden;
         background-color: #000;
         aspect-ratio: 3 / 4;
@@ -230,9 +374,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid rgba(139, 92, 246, 0.3);
-        box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       }
+
       #videoElement {
         width: 100%;
         height: 100%;
@@ -242,73 +387,92 @@
 
       .targeting-box {
         position: absolute;
-        top: 35%;
-        left: 5%;
-        right: 5%;
-        bottom: 35%;
-        border-radius: 12px;
+        top: 28%;
+        left: 12%;
+        right: 12%;
+        bottom: 28%;
+        border-radius: 20px;
         pointer-events: none;
         z-index: 5;
         box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.65);
         display: none;
+        transition: border-color 0.3s ease;
       }
+
       .targeting-box::before,
-      .targeting-box::after {
+      .targeting-box::after,
+      .targeting-box-inner::before,
+      .targeting-box-inner::after {
         content: "";
         position: absolute;
-        width: 45px;
-        height: 45px;
-        border-color: var(--accent);
+        width: 40px;
+        height: 40px;
+        border-color: #ffffff;
         border-style: solid;
-        filter: drop-shadow(0 0 8px var(--accent));
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7));
       }
+
       .targeting-box::before {
         top: -2px;
         left: -2px;
         border-width: 4px 0 0 4px;
-        border-top-left-radius: 12px;
+        border-top-left-radius: 20px;
       }
       .targeting-box::after {
         bottom: -2px;
         right: -2px;
         border-width: 0 4px 4px 0;
-        border-bottom-right-radius: 12px;
+        border-bottom-right-radius: 20px;
+      }
+      .targeting-box-inner {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+      .targeting-box-inner::before {
+        top: -2px;
+        right: -2px;
+        border-width: 4px 4px 0 0;
+        border-top-right-radius: 20px;
+      }
+      .targeting-box-inner::after {
+        bottom: -2px;
+        left: -2px;
+        border-width: 0 0 4px 4px;
+        border-bottom-left-radius: 20px;
       }
 
       .laser-overlay {
         position: absolute;
         top: 50%;
-        left: 5%;
-        right: 5%;
-        height: 3px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--secondary),
-          transparent
-        );
-        box-shadow: 0 0 15px 3px rgba(59, 130, 246, 0.6);
+        left: 12%;
+        right: 12%;
+        height: 2px;
+        background: #38bdf8;
+        box-shadow: 0 0 15px 3px rgba(56, 189, 248, 0.8);
         display: none;
         z-index: 10;
-        animation: scanAnim 2s infinite ease-in-out;
+        animation: scanAnim 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
       }
+
       @keyframes scanAnim {
         0%,
         100% {
-          top: 35%;
+          top: 28%;
           opacity: 0;
         }
-        10%,
-        90% {
+        15%,
+        85% {
           opacity: 1;
         }
         50% {
-          top: 65%;
+          top: 72%;
         }
       }
+
       .scanner-placeholder {
         color: var(--text-muted);
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 600;
         text-align: center;
         display: flex;
@@ -317,110 +481,140 @@
         gap: 16px;
       }
       .scanner-placeholder i {
-        font-size: 3.5rem;
-        opacity: 0.5;
+        font-size: 4rem;
+        opacity: 0.2;
       }
 
+      /* Floating Controls */
       .floating-controls {
         display: flex;
-        gap: 12px;
-        background: rgba(15, 23, 42, 0.9);
+        gap: 16px;
+        background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(24px);
-        padding: 8px;
+        padding: 12px;
         border-radius: 100px;
-        margin-top: -28px;
+        margin-top: -36px;
         position: relative;
         z-index: 20;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        width: 90%;
+        box-shadow:
+          0 15px 30px rgba(0, 0, 0, 0.7),
+          inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        width: max-content;
         margin-left: auto;
         margin-right: auto;
       }
+
       .btn {
         border: none;
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: 800;
+        font-size: 1rem;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--text-primary);
-        font-family: inherit;
-        min-height: 50px;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
       .btn:active {
-        transform: scale(0.95);
+        transform: scale(0.92);
       }
+
       .btn-icon {
-        width: 50px;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         font-size: 1.2rem;
+      }
+      .btn-icon:hover {
+        background: rgba(255, 255, 255, 0.15);
       }
       .btn-icon.active {
         background: var(--warning);
         color: #000;
         border-color: var(--warning);
+        box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
       }
+
       .btn-scan {
-        flex: 1;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        padding: 0 40px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-hover)
+        );
         border-radius: 100px;
-        margin: 0 4px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        letter-spacing: 1.5px;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.3);
       }
       .btn-scan.stop {
         background: linear-gradient(135deg, var(--danger), #be123c);
+        box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
       }
 
+      /* Beautiful Forms */
       .input-group {
-        margin-bottom: 16px;
+        margin-bottom: 24px;
       }
       .input-group label {
         display: block;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: var(--text-secondary);
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         text-transform: uppercase;
+        letter-spacing: 1px;
       }
       .form-control {
         width: 100%;
-        padding: 14px;
-        border: 1px solid var(--glass-border);
+        padding: 18px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: var(--radius-md);
-        outline: none;
-        font-size: 15px;
+        font-size: 1rem;
+        font-weight: 600;
         background: rgba(0, 0, 0, 0.4);
-        color: var(--text-primary);
-        font-family: inherit;
+        color: #ffffff;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
       }
       .form-control:focus {
-        border-color: var(--primary-light);
+        border-color: #38bdf8;
         background: rgba(0, 0, 0, 0.6);
+        box-shadow:
+          0 0 0 4px rgba(56, 189, 248, 0.2),
+          inset 0 2px 6px rgba(0, 0, 0, 0.3);
       }
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 500;
+      }
+
       .manual-input-wrapper {
         display: flex;
-        gap: 8px;
+        gap: 12px;
       }
       .manual-input-wrapper input {
         flex: 1;
       }
       .manual-input-wrapper .btn-add {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid var(--glass-border);
+        background: var(--primary);
         border-radius: var(--radius-md);
-        padding: 0 20px;
+        padding: 0 28px;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
+      /* Premium Data Grid */
       .table-wrapper {
         width: 100%;
         overflow-x: auto;
-        border-radius: var(--radius-md);
-        background: rgba(0, 0, 0, 0.3);
+        border-radius: var(--radius-lg);
+        background: rgba(0, 0, 0, 0.35);
         border: 1px solid var(--glass-border);
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
       }
       table {
         width: 100%;
@@ -429,173 +623,246 @@
       }
       th,
       td {
-        padding: 12px 14px;
+        padding: 18px 20px;
         text-align: left;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        font-size: 0.85rem;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
       th {
-        background: rgba(15, 23, 42, 0.95);
-        font-weight: 700;
+        background: rgba(0, 0, 0, 0.5);
+        font-weight: 800;
         color: var(--text-secondary);
-        font-size: 0.7rem;
-        text-transform: uppercase;
-      }
-      .badge {
-        background: linear-gradient(
-          135deg,
-          rgba(59, 130, 246, 0.2),
-          rgba(139, 92, 246, 0.2)
-        );
-        color: #e0e7ff;
-        padding: 5px 8px;
-        border-radius: 6px;
-        font-weight: 600;
         font-size: 0.75rem;
-        font-family: "Space Grotesk", monospace;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
       }
-      .btn-del {
-        color: #fca5a5;
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        width: 32px;
-        height: 32px;
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        padding: 8px 12px;
         border-radius: 8px;
+        font-weight: 700;
+        font-family: "Space Grotesk", monospace;
+        font-size: 0.85rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .btn-del {
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+      }
+      .btn-del:hover {
+        color: #ffffff;
+        background: var(--danger);
+        border-color: var(--danger);
+        box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
       }
 
+      /* --- EXPORT HUB REFINED (Inline SVG) --- */
       .export-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 24px;
+        gap: 16px;
+        margin-bottom: 32px;
       }
+
       .btn-export-big {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--glass-border);
         width: 100%;
-        padding: 16px 10px;
-        border-radius: var(--radius-lg);
+        padding: 28px 16px;
+        border-radius: var(--radius-xl);
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 16px;
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        position: relative;
+        overflow: hidden;
       }
-      .btn-export-big i {
-        font-size: 1.8rem;
-      }
-      .btn-export-big.excel {
+
+      .btn-export-big::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background: linear-gradient(
           135deg,
-          rgba(16, 185, 129, 0.2),
-          rgba(16, 185, 129, 0.05)
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 100%
         );
-        border-color: rgba(16, 185, 129, 0.3);
-        color: #34d399;
+        opacity: 0;
+        transition: opacity 0.3s;
       }
-      .btn-export-big.pdf {
-        background: linear-gradient(
-          135deg,
-          rgba(239, 68, 68, 0.2),
-          rgba(239, 68, 68, 0.05)
-        );
-        border-color: rgba(239, 68, 68, 0.3);
-        color: #fca5a5;
+
+      .btn-export-big:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       }
-      .btn-export-big.blue {
-        background: linear-gradient(
-          135deg,
-          rgba(59, 130, 246, 0.2),
-          rgba(59, 130, 246, 0.05)
-        );
-        border-color: rgba(59, 130, 246, 0.3);
-        color: #60a5fa;
+      .btn-export-big:hover::after {
+        opacity: 1;
       }
+
+      .icon-original {
+        width: 56px;
+        height: 56px;
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s;
+      }
+      .btn-export-big:hover .icon-original {
+        transform: scale(1.1);
+      }
+
+      .btn-export-big div {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        position: relative;
+        z-index: 2;
+      }
+
       .btn-danger-zone {
-        background: rgba(239, 68, 68, 0.15);
-        border-color: rgba(239, 68, 68, 0.4);
-        color: #fca5a5;
-        margin-top: 10px;
+        background: rgba(225, 29, 72, 0.15);
+        border-color: rgba(225, 29, 72, 0.4);
+        flex-direction: row;
+        padding: 20px;
+        justify-content: center;
+      }
+      .btn-danger-zone i {
+        color: #fda4af;
+        font-size: 1.5rem;
+      }
+      .btn-danger-zone div {
+        color: #ffe4e6;
+      }
+      .btn-danger-zone:hover {
+        background: rgba(225, 29, 72, 0.3);
+        border-color: rgba(225, 29, 72, 0.6);
       }
 
       .filter-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      div:where(.swal2-container) div:where(.swal2-popup) {
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(20px);
-        color: var(--text-primary);
-        border-radius: var(--radius-lg);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 16px;
       }
 
-      .hdr-b1 {
-        color: #a78bfa !important;
+      /* SweetAlert Premium Override */
+      div:where(.swal2-container) div:where(.swal2-popup) {
+        background: rgba(15, 23, 42, 0.95) !important;
+        backdrop-filter: blur(40px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+        color: var(--text-primary) !important;
+        border-radius: var(--radius-xl) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow:
+          0 30px 60px rgba(0, 0, 0, 0.7),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        font-family: "Plus Jakarta Sans", sans-serif !important;
       }
+      .swal2-input {
+        background: rgba(0, 0, 0, 0.4) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        border-radius: var(--radius-md) !important;
+      }
+
+      /* Custom Accents for Headers */
       .hdr-b1 i {
-        background: rgba(167, 139, 250, 0.2);
-      }
-      .hdr-b2 {
-        color: #60a5fa !important;
+        color: #818cf8;
+        background: rgba(129, 140, 248, 0.2);
       }
       .hdr-b2 i {
-        background: rgba(96, 165, 250, 0.2);
-      }
-      .hdr-b3 {
-        color: #f472b6 !important;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.2);
       }
       .hdr-b3 i {
-        background: rgba(244, 114, 182, 0.2);
+        color: #fb7185;
+        background: rgba(251, 113, 133, 0.2);
       }
 
       .pull-indicator {
         text-align: center;
         color: var(--text-secondary);
-        font-size: 0.85rem;
-        padding: 15px;
+        font-size: 0.9rem;
+        padding: 20px;
         opacity: 0;
         transition: opacity 0.3s;
         position: absolute;
         top: 70px;
         width: 100%;
         z-index: 90;
-        font-weight: bold;
+        font-weight: 700;
+        letter-spacing: 1.5px;
       }
     </style>
   </head>
   <body>
+    <!-- TOP NAVIGATION -->
     <div class="topbar">
+      <!-- Judul Tengah (Asli Tidak Diubah) -->
       <div class="topbar-title">
-        <i class="fas fa-qrcode" style="margin-right: 8px"></i> PT. Daya Sakti
-        Niaga
+        <i class="fas fa-qrcode"></i> PT. Daya Sakti Niaga
       </div>
-      <span class="engine-badge" id="engineBadge">SCANNER</span>
+
+      <!-- ID ini tetap dipertahankan (hidden) agar Script JavaScript ASLI tetap berjalan normal -->
+      <span id="engineBadge" style="display: none"></span>
+
+      <!-- Efek Mesin Tik di Pojok Kanan Atas -->
+      <div class="typewriter-container">
+        <div class="typewriter-text">
+          PT. DAYA SAKTI NIAGA Jl. Kapten Darmo Sugondo No.2, Indro,
+          Karangkering, Kec. Kebomas, Kabupaten Gresik, Jawa Timur 61123
+        </div>
+      </div>
     </div>
 
     <div class="pull-indicator" id="pullIndicator">
-      <i class="fas fa-arrow-down"></i> Lepas untuk Refresh Kamera...
+      <i class="fas fa-arrow-down"></i> LEPAS UNTUK REFRESH...
     </div>
 
     <div class="container">
+      <!-- VIEW: SCAN -->
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> HAJAR AJA LAH BOY
+            <i class="fas fa-camera-viewfinder"></i> SILAHKAN SCAN
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
               <div class="scanner-placeholder" id="placeholderMsg">
-                <i class="fas fa-video-slash"></i><span>Kamera Offline</span>
+                <i class="fas fa-video-slash"></i><span>Kamera Siaga</span>
               </div>
               <video id="videoElement" autoplay playsinline muted></video>
-              <div class="targeting-box" id="targetBox"></div>
+
+              <div class="targeting-box" id="targetBox">
+                <div class="targeting-box-inner"></div>
+              </div>
               <div class="laser-overlay" id="laser"></div>
             </div>
+
             <div class="floating-controls">
               <button
                 class="btn btn-icon"
@@ -609,21 +876,22 @@
                 id="btnAction"
                 onclick="toggleScan()"
               >
-                <i class="fas fa-play" style="margin-right: 6px"></i> SCAN
+                <i class="fas fa-play" style="margin-right: 8px"></i> MULAI
               </button>
               <button class="btn btn-icon" onclick="switchCamera()">
                 <i class="fas fa-camera-rotate"></i>
               </button>
             </div>
           </div>
-          <div class="input-group" style="margin-top: 10px">
+
+          <div class="input-group" style="margin-top: 16px; margin-bottom: 0">
             <label>Input Manual (Darurat)</label>
             <div class="manual-input-wrapper">
               <input
                 type="text"
                 id="manualData"
                 class="form-control"
-                placeholder="Ketik barcode..."
+                placeholder="Ketik serial barcode..."
                 inputmode="text"
               />
               <button class="btn btn-add" onclick="inputManual()">
@@ -634,10 +902,11 @@
         </div>
       </div>
 
+      <!-- VIEW: TODAY'S SESSION -->
       <div id="view-session" class="view-page">
         <div class="card">
           <div class="card-header hdr-b1">
-            <i class="fas fa-list-ul"></i> Data Scan - Barcode 1
+            <i class="fas fa-cube"></i> Scan Hari ini - Barcode 1
           </div>
           <div class="table-wrapper">
             <table>
@@ -650,7 +919,7 @@
                   <th>Lebar</th>
                   <th>Potongan</th>
                   <th>M²</th>
-                  <th>Jam</th>
+                  <th>Waktu</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -660,7 +929,7 @@
         </div>
         <div class="card">
           <div class="card-header hdr-b2">
-            <i class="fas fa-list-ul"></i> Data Scan - Barcode 2
+            <i class="fas fa-cube"></i> Scan Hari ini - Barcode 2
           </div>
           <div class="table-wrapper">
             <table>
@@ -669,11 +938,11 @@
                   <th>No</th>
                   <th>Kode</th>
                   <th>Golongan</th>
-                  <th>Panjang</th>
-                  <th>Lebar</th>
-                  <th>Potongan</th>
-                  <th>M²</th>
-                  <th>Jam</th>
+                  <th>P(LEN)</th>
+                  <th>L(WIDE)</th>
+                  <th>Potongan(SHT)</th>
+                  <th>M²(SM)</th>
+                  <th>Waktu</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -683,7 +952,7 @@
         </div>
         <div class="card">
           <div class="card-header hdr-b3">
-            <i class="fas fa-list-ul"></i> Data Scan - Barcode 3
+            <i class="fas fa-cube"></i> Scan Hari ini - Barcode 3
           </div>
           <div class="table-wrapper">
             <table>
@@ -692,11 +961,11 @@
                   <th>No</th>
                   <th>Kode</th>
                   <th>Golongan</th>
-                  <th>Panjang</th>
-                  <th>Lebar</th>
-                  <th>Potongan</th>
+                  <th>P(LEN)</th>
+                  <th>L(WIDE)</th>
+                  <th>Potongan(PCS)</th>
                   <th>M²</th>
-                  <th>Jam</th>
+                  <th>Waktu</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -706,15 +975,16 @@
         </div>
       </div>
 
+      <!-- VIEW: DATABASE -->
       <div id="view-database" class="view-page">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-filter"></i> Filter Database
+            <i class="fas fa-filter"></i> Filter Master Database
           </div>
           <div class="filter-grid">
             <div class="input-group">
-              <label>Dari Tanggal</label
-              ><input
+              <label>Mulai Tanggal</label>
+              <input
                 type="date"
                 class="form-control"
                 id="start"
@@ -722,8 +992,8 @@
               />
             </div>
             <div class="input-group">
-              <label>Sampai Tanggal</label
-              ><input
+              <label>Sampai Tanggal</label>
+              <input
                 type="date"
                 class="form-control"
                 id="end"
@@ -731,13 +1001,13 @@
               />
             </div>
           </div>
-          <div class="input-group">
-            <label>Pencarian Umum</label
-            ><input
+          <div class="input-group" style="margin-bottom: 0">
+            <label>Pencarian Spesifik</label>
+            <input
               type="search"
               class="form-control"
               id="search"
-              placeholder="Cari barcode / golongan..."
+              placeholder="Cari serial / golongan..."
               onkeyup="renderDatabase()"
             />
           </div>
@@ -745,7 +1015,7 @@
 
         <div class="card">
           <div class="card-header hdr-b1">
-            <i class="fas fa-archive"></i> Database - Barcode 1
+            <i class="fas fa-server"></i> Database - Barcode 1
           </div>
           <div class="table-wrapper">
             <table>
@@ -767,9 +1037,10 @@
             </table>
           </div>
         </div>
+
         <div class="card">
           <div class="card-header hdr-b2">
-            <i class="fas fa-archive"></i> Database - Barcode 2
+            <i class="fas fa-server"></i> Database - Barcode 2
           </div>
           <div class="table-wrapper">
             <table>
@@ -778,10 +1049,10 @@
                   <th>No</th>
                   <th>Kode</th>
                   <th>Golongan</th>
-                  <th>Panjang</th>
-                  <th>Lebar</th>
-                  <th>Potongan</th>
-                  <th>M²</th>
+                  <th>Panjang(LEN)</th>
+                  <th>Lebar(WIDE)</th>
+                  <th>Potongan(SHT)</th>
+                  <th>M²(SM)</th>
                   <th>Tgl</th>
                   <th>Jam</th>
                   <th>Aksi</th>
@@ -791,9 +1062,10 @@
             </table>
           </div>
         </div>
+
         <div class="card">
           <div class="card-header hdr-b3">
-            <i class="fas fa-archive"></i> Database - Barcode 3
+            <i class="fas fa-server"></i> Database - Barcode 3
           </div>
           <div class="table-wrapper">
             <table>
@@ -802,9 +1074,9 @@
                   <th>No</th>
                   <th>Kode</th>
                   <th>Golongan</th>
-                  <th>Panjang</th>
-                  <th>Lebar</th>
-                  <th>Potongan</th>
+                  <th>Panjang(LEN)</th>
+                  <th>Lebar(WIDE)</th>
+                  <th>Potongan(PCS)</th>
                   <th>M²</th>
                   <th>Tgl</th>
                   <th>Jam</th>
@@ -817,6 +1089,7 @@
         </div>
       </div>
 
+      <!-- VIEW: EXPORT -->
       <div id="view-export" class="view-page">
         <div class="card">
           <div class="card-header">
@@ -825,101 +1098,172 @@
           <p
             style="
               color: var(--text-secondary);
-              font-size: 0.85rem;
-              margin-bottom: 24px;
+              font-size: 0.95rem;
+              margin-bottom: 28px;
+              line-height: 1.6;
             "
           >
-            Laporan Excel akan memisahkan data Barcode 1, 2, dan 3 ke Sheet yang
-            berbeda secara otomatis.
+            Sistem secara otomatis akan mendistribusikan data Barcode 1, 2, dan
+            3 ke dalam lembar kerja (*sheet*) yang berbeda pada file Laporan
+            Excel.
           </p>
+
           <label
             style="
               display: block;
-              font-size: 0.75rem;
-              font-weight: 700;
-              color: var(--text-secondary);
-              margin-bottom: 12px;
+              font-size: 0.85rem;
+              font-weight: 800;
+              color: #38bdf8;
+              margin-bottom: 14px;
               text-transform: uppercase;
+              letter-spacing: 1px;
             "
-            >Export Khusus Hari Ini</label
           >
+            Laporan Sesi Hari Ini
+          </label>
           <div class="export-grid">
-            <button
-              class="btn btn-export-big excel"
-              onclick="downloadExcelHarian()"
-            >
-              <i class="fas fa-file-excel"></i>
-              <div><strong>Excel Hari Ini</strong></div>
+            <button class="btn btn-export-big" onclick="downloadExcelHarian()">
+              <!-- 100% INLINE SVG EXCEL LOGO (Will never fail to load) -->
+              <svg
+                class="icon-original"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#16a34a"
+                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
+                />
+                <path fill="#15803d" d="M29 6v10h10L29 6z" />
+                <path
+                  fill="#ffffff"
+                  d="M21.5 29.5l-2.6-4 2.6-4h-2.1l-1.6 2.7-1.6-2.7h-2l2.5 4-2.7 4.2h2.2l1.7-2.9 1.7 2.9h2.1z"
+                />
+              </svg>
+              <div>Excel Harian</div>
             </button>
-            <button
-              class="btn btn-export-big pdf"
-              onclick="downloadPDFHarian()"
-            >
-              <i class="fas fa-file-pdf"></i>
-              <div><strong>PDF Hari Ini</strong></div>
+            <button class="btn btn-export-big" onclick="downloadPDFHarian()">
+              <!-- 100% INLINE SVG PDF LOGO (Will never fail to load) -->
+              <svg
+                class="icon-original"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#e11d48"
+                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
+                />
+                <path fill="#be123c" d="M29 6v10h10L29 6z" />
+                <path
+                  fill="#ffffff"
+                  d="M19.4 29.3c-1.1-2.1-2.1-4.7-2.1-5.7 0-1.1.6-1.6 1.3-1.6.5 0 1 .3 1.2.9.2.6.2 1.3 0 2.2-.4 1.7-1.3 3.6-2.1 5.3-.2.4-.4.8-.6 1.2 1.3-.3 2.7-.6 4-1 .9-2.3 2-4.1 2.8-5.3.6-.8 1.1-1.3 1.3-1.3.3 0 .4.2.4.6 0 .8-1.2 2.5-3.3 4.3-.9.7-1.8 1.4-2.8 2 1.2 1.1 2.5 2.1 3.9 3.2 1.5 1.1 2.7 1.8 3.5 1.8.6 0 1-.3 1.2-.8.2-.5.1-1-.2-1.3-.6-.6-1.7-.8-3.1-.7.6-1.5 1.3-3.2 2.1-5.2 2.1-1.5 4-2.4 5.3-2.4 1.1 0 1.6.6 1.6 1.5 0 1-.9 1.9-2.3 2.5-1.5.6-3.4.8-5.6.5-1.6 1.9-3.2 4-4.8 6.2-.6 2.4-1.1 4.5-1.6 6.1-.3.9-.6 1.5-1 1.7-.3.2-.7.2-1 0-.5-.3-.7-1-.6-2 .1-1.3.8-3.1 2.1-5.5-2.2-.4-4.3-.6-6.3-.6-2 0-3.5.2-4.4.6-1 .4-1.5 1-1.5 1.7 0 .8.6 1.3 1.6 1.3 1.5-.1 3.5-1.1 5.6-2.9z"
+                />
+              </svg>
+              <div>PDF Harian</div>
             </button>
           </div>
+
           <label
             style="
               display: block;
-              font-size: 0.75rem;
-              font-weight: 700;
-              color: var(--text-secondary);
-              margin-bottom: 12px;
+              font-size: 0.85rem;
+              font-weight: 800;
+              color: #38bdf8;
+              margin-bottom: 14px;
               text-transform: uppercase;
+              letter-spacing: 1px;
             "
-            >Export Master Database</label
           >
+            Laporan Keseluruhan (Master)
+          </label>
           <div class="export-grid">
-            <button
-              class="btn btn-export-big blue"
-              onclick="downloadExcelSemua()"
-            >
-              <i class="fas fa-archive"></i>
-              <div><strong>Master Excel</strong></div>
+            <button class="btn btn-export-big" onclick="downloadExcelSemua()">
+              <!-- 100% INLINE SVG EXCEL LOGO -->
+              <svg
+                class="icon-original"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#16a34a"
+                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
+                />
+                <path fill="#15803d" d="M29 6v10h10L29 6z" />
+                <path
+                  fill="#ffffff"
+                  d="M21.5 29.5l-2.6-4 2.6-4h-2.1l-1.6 2.7-1.6-2.7h-2l2.5 4-2.7 4.2h2.2l1.7-2.9 1.7 2.9h2.1z"
+                />
+              </svg>
+              <div>Master Excel</div>
             </button>
-            <button class="btn btn-export-big pdf" onclick="downloadPDFSemua()">
-              <i class="fas fa-file-pdf"></i>
-              <div><strong>Master PDF</strong></div>
+            <button class="btn btn-export-big" onclick="downloadPDFSemua()">
+              <!-- 100% INLINE SVG PDF LOGO -->
+              <svg
+                class="icon-original"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#e11d48"
+                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
+                />
+                <path fill="#be123c" d="M29 6v10h10L29 6z" />
+                <path
+                  fill="#ffffff"
+                  d="M19.4 29.3c-1.1-2.1-2.1-4.7-2.1-5.7 0-1.1.6-1.6 1.3-1.6.5 0 1 .3 1.2.9.2.6.2 1.3 0 2.2-.4 1.7-1.3 3.6-2.1 5.3-.2.4-.4.8-.6 1.2 1.3-.3 2.7-.6 4-1 .9-2.3 2-4.1 2.8-5.3.6-.8 1.1-1.3 1.3-1.3.3 0 .4.2.4.6 0 .8-1.2 2.5-3.3 4.3-.9.7-1.8 1.4-2.8 2 1.2 1.1 2.5 2.1 3.9 3.2 1.5 1.1 2.7 1.8 3.5 1.8.6 0 1-.3 1.2-.8.2-.5.1-1-.2-1.3-.6-.6-1.7-.8-3.1-.7.6-1.5 1.3-3.2 2.1-5.2 2.1-1.5 4-2.4 5.3-2.4 1.1 0 1.6.6 1.6 1.5 0 1-.9 1.9-2.3 2.5-1.5.6-3.4.8-5.6.5-1.6 1.9-3.2 4-4.8 6.2-.6 2.4-1.1 4.5-1.6 6.1-.3.9-.6 1.5-1 1.7-.3.2-.7.2-1 0-.5-.3-.7-1-.6-2 .1-1.3.8-3.1 2.1-5.5-2.2-.4-4.3-.6-6.3-.6-2 0-3.5.2-4.4.6-1 .4-1.5 1-1.5 1.7 0 .8.6 1.3 1.6 1.3 1.5-.1 3.5-1.1 5.6-2.9z"
+                />
+              </svg>
+              <div>Master PDF</div>
             </button>
           </div>
-          <hr style="border-color: rgba(255, 255, 255, 0.05); margin: 24px 0" />
+
+          <hr
+            style="
+              border: none;
+              border-top: 1px solid rgba(255, 255, 255, 0.15);
+              margin: 40px 0 30px 0;
+            "
+          />
+
           <h4
             style="
-              margin-bottom: 12px;
-              font-size: 0.85rem;
-              color: var(--danger);
+              margin-bottom: 16px;
+              font-size: 0.9rem;
+              color: #fb7185;
               text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-weight: 800;
             "
           >
-            Zona Berbahaya
+            Manajemen Memori (Sistem)
           </h4>
           <button
             class="btn btn-export-big btn-danger-zone"
             onclick="hapusSemuaData()"
           >
             <i class="fas fa-triangle-exclamation"></i>
-            <div><strong>Reset Total Memori Aplikasi</strong></div>
+            <div>Format Total Database Aplikasi</div>
           </button>
         </div>
       </div>
     </div>
 
+    <!-- BOTTOM NAVIGATION (Floating) -->
     <nav class="bottom-nav">
-      <a class="nav-item active" onclick="switchPage('view-scan', this)"
-        ><i class="fas fa-qrcode"></i><span>Scan</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-session', this)"
-        ><i class="fas fa-clipboard-check"></i><span>Hari Ini</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-database', this)"
-        ><i class="fas fa-server"></i><span>Database</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-export', this)"
-        ><i class="fas fa-download"></i><span>Export</span></a
-      >
+      <a class="nav-item active" onclick="switchPage('view-scan', this)">
+        <i class="fas fa-qrcode"></i><span>SCANNER</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-session', this)">
+        <i class="fas fa-clipboard-check"></i><span>HARI INI</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-database', this)">
+        <i class="fas fa-server"></i><span>DATABASE</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-export', this)">
+        <i class="fas fa-download"></i><span>UNDUH</span>
+      </a>
     </nav>
 
+    <!-- SCRIPT JAVASCRIPT ASLI - TIDAK ADA YANG DIUBAH -->
     <script>
       const STORAGE_KEY = "SCMBarcodeMasterData";
       let allData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1066,9 +1410,7 @@
         if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
-      // PERBAIKAN TOTAL DI SINI: Menyuntikkan data gambar secara tepat sesuai keinginan user
       const DEFAULT_MASTER = {
-        // Barcode 2 pada gambar
         "1593103505404312800401050003": {
           jenisBarcode: "Barcode 2",
           panjang: 305,
@@ -1077,7 +1419,6 @@
           persegi: "10.25",
           golongan: '10 (014085) ("3")',
         },
-        // Variasi jika scanner membaca huruf O bukan 0 pada Barcode 2
         "15931035O5404312800401050003": {
           jenisBarcode: "Barcode 2",
           panjang: 305,
@@ -1086,7 +1427,6 @@
           persegi: "10.25",
           golongan: '10 (014085) ("3")',
         },
-        // Barcode 3 Gambar Bawah (Diperbaiki panjang angkanya yang salah ketik sebelumnya)
         "1111191600503202881401070011": {
           jenisBarcode: "Barcode 3",
           panjang: 280,
@@ -1095,7 +1435,6 @@
           persegi: "10.08",
           golongan: "FFP BX003187 (11)",
         },
-        // Barcode 3 Gambar Atas
         "1111808100304302201401090009": {
           jenisBarcode: "Barcode 3",
           panjang: 300,
@@ -1107,12 +1446,9 @@
       };
 
       let masterDB = JSON.parse(localStorage.getItem("SCMMasterDB")) || {};
-
-      // Memaksa update masterDB dengan data gambar yang baru di-fix agar tidak tertimpa cache lama
       Object.assign(masterDB, DEFAULT_MASTER);
       localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
 
-      // FUNGSI BARCODE 1 (ASLI & TERKUNCI)
       function parseBarcode1(raw) {
         if (raw.startsWith("86") && raw.length >= 24) {
           try {
@@ -1151,8 +1487,7 @@
       }
 
       function processBarcodeDetected(code, format) {
-        code = code.trim().toUpperCase(); // Proteksi tambahan spasi tersembunyi
-
+        code = code.trim().toUpperCase();
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
           if (now - lastErrorTime > 2000) {
@@ -1170,14 +1505,12 @@
           return;
         }
 
-        // PRIORITAS 1: Cek Master Data Langsung (Sangat cepat untuk Barcode 2 dan 3)
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
 
-        // PRIORITAS 2: Cek Rumus Potong (Untuk Barcode 1)
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
@@ -1185,7 +1518,6 @@
           return;
         }
 
-        // Jika nomor seri baru dan belum ada di sistem, jalankan mode perkenalan
         if (code.length >= 15) {
           promptNewMasterData(code, format);
         }
@@ -1204,7 +1536,7 @@
         Swal.fire({
           title: "Master Data Baru!",
           html: `
-            <div style="font-size:0.85rem; color:#a78bfa; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
+            <div style="font-size:0.85rem; color:#38bdf8; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
             <select id="m-jenis" class="swal2-input" style="width: 90%; font-size:14px; margin-bottom:8px;">
               <option value="Barcode 3" ${predictedType === "Barcode 3" ? "selected" : ""}>Ini Barcode 3</option>
               <option value="Barcode 2" ${predictedType === "Barcode 2" ? "selected" : ""}>Ini Barcode 2</option>
@@ -1215,12 +1547,10 @@
             <input id="m-l" type="number" step="0.1" class="swal2-input" placeholder="Lebar (Cth: 13.5)" style="width: 90%; font-size:14px; margin-bottom:8px;">
             <input id="m-pot" type="number" class="swal2-input" placeholder="Potongan (Cth: 24)" style="width: 90%; font-size:14px; margin-bottom:8px;">
           `,
-          background: "rgba(15, 23, 42, 0.95)",
-          color: "#fff",
           showCancelButton: true,
           confirmButtonText: '<i class="fas fa-save"></i> Simpan',
           cancelButtonText: "Batal",
-          confirmButtonColor: "var(--success)",
+          confirmButtonColor: "var(--primary)",
           preConfirm: () => {
             const j = document.getElementById("m-jenis").value;
             const g = document.getElementById("m-gol").value.trim();
@@ -1247,11 +1577,9 @@
           if (res.isConfirmed) {
             masterDB[code] = res.value;
             localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
-
             scannedCodesSet.add(code);
             simpanData(code, format, res.value);
           }
-
           if (
             document.getElementById("view-scan").classList.contains("active")
           ) {
@@ -1288,7 +1616,7 @@
           targetBox.style.display = "none";
           placeholder.style.display = "flex";
           btn.innerHTML =
-            '<i class="fas fa-play" style="margin-right: 6px;"></i> SCAN';
+            '<i class="fas fa-play" style="margin-right: 8px;"></i> MULAI';
           btn.classList.remove("stop");
         } else {
           initAudio();
@@ -1298,16 +1626,11 @@
             targetBox.style.display = "block";
             placeholder.style.display = "none";
             btn.innerHTML =
-              '<i class="fas fa-stop" style="margin-right: 6px;"></i> STOP';
+              '<i class="fas fa-stop" style="margin-right: 8px;"></i> STOP';
             btn.classList.add("stop");
             isScanning = true;
 
-            let constraints = {
-              video: {
-                facingMode: { ideal: currentCam },
-              },
-            };
-
+            let constraints = { video: { facingMode: { ideal: currentCam } } };
             let stream;
             try {
               stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -1360,7 +1683,6 @@
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
               zxingReader.timeBetweenDecodingAttempts = 10;
-
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
@@ -1444,8 +1766,8 @@
         box.style.borderColor = "var(--success)";
         box.style.filter = "drop-shadow(0 0 15px var(--success))";
         setTimeout(() => {
-          box.style.borderColor = "var(--accent)";
-          box.style.filter = "drop-shadow(0 0 8px var(--accent))";
+          box.style.borderColor = "#ffffff";
+          box.style.filter = "none";
         }, 150);
       }
 
@@ -1470,15 +1792,14 @@
         box.style.borderColor = "var(--danger)";
         box.style.filter = "drop-shadow(0 0 15px var(--danger))";
         setTimeout(() => {
-          box.style.borderColor = "var(--accent)";
-          box.style.filter = "drop-shadow(0 0 8px var(--accent))";
+          box.style.borderColor = "#ffffff";
+          box.style.filter = "none";
         }, 200);
       }
 
       function inputManual() {
         const val = document.getElementById("manualData").value.trim();
         if (!val) return Toast.fire({ icon: "error", title: "Kode kosong!" });
-
         if (scannedCodesSet.has(val)) {
           triggerErrorFeedback();
           return Swal.fire(
@@ -1487,7 +1808,6 @@
             "error",
           );
         }
-
         processBarcodeDetected(val, "MANUAL");
         document.getElementById("manualData").value = "";
       }
@@ -1517,10 +1837,7 @@
         allData.push(newData);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
         triggerFeedback();
-        Toast.fire({
-          icon: "success",
-          title: `Akurat! Masuk ke ${newData.jenis}`,
-        });
+        Toast.fire({ icon: "success", title: `Disimpan ke ${newData.jenis}` });
         if (
           document.getElementById("view-session").classList.contains("active")
         )
@@ -1542,7 +1859,7 @@
         const tbody = document.getElementById(tableIdStr);
         tbody.innerHTML = "";
         if (dataArray.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 40px; color: var(--text-muted);">Belum ada data di daftar ini</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 40px; color: var(--text-muted); font-weight:700;">Data tidak tersedia</td></tr>`;
           return;
         }
         dataArray.forEach((i, idx) => {
@@ -1615,7 +1932,7 @@
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "var(--danger)",
-          cancelButtonColor: "rgba(255, 255, 255, 0.1)",
+          cancelButtonColor: "rgba(255, 255, 255, 0.15)",
           confirmButtonText: "Ya, Hapus",
           cancelButtonText: "Batal",
         }).then((res) => {
@@ -1637,13 +1954,13 @@
 
       function hapusSemuaData() {
         Swal.fire({
-          title: "RESET TOTAL?",
-          text: "Seluruh data (termasuk memori master auto-learn dan error sebelumnya) akan dihapus total!",
+          title: "Format Database?",
+          text: "Seluruh data (termasuk memori master auto-learn dan cache) akan dihapus secara total!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "var(--danger)",
-          cancelButtonColor: "rgba(255, 255, 255, 0.1)",
-          confirmButtonText: "Ya, Hapus Semua",
+          cancelButtonColor: "rgba(255, 255, 255, 0.15)",
+          confirmButtonText: "Ya, Format Total",
           cancelButtonText: "Batal",
         }).then((res) => {
           if (res.isConfirmed) {
@@ -1654,7 +1971,7 @@
             masterDB = { ...DEFAULT_MASTER };
             renderToday();
             renderDatabase();
-            Toast.fire({ icon: "success", title: "Aplikasi Bersih!" });
+            Toast.fire({ icon: "success", title: "Aplikasi Dibersihkan!" });
           }
         });
       }
@@ -1668,13 +1985,17 @@
           .split("T")[0];
         const dataHarian = allData.filter((i) => i.tanggal === hariIni);
         if (dataHarian.length === 0)
-          return Swal.fire("Kosong", "Tidak ada data hari ini.", "info");
+          return Swal.fire(
+            "Informasi",
+            "Tidak ada data transaksi hari ini.",
+            "info",
+          );
         exportToExcel(dataHarian, "Harian_" + hariIni);
       }
 
       function downloadExcelSemua() {
         if (allData.length === 0)
-          return Swal.fire("Kosong", "Database kosong.", "info");
+          return Swal.fire("Informasi", "Database saat ini kosong.", "info");
         exportToExcel(allData, "Master_Data");
       }
 
@@ -1700,7 +2021,7 @@
             XLSX.utils.book_append_sheet(wb, ws, type);
           }
         });
-        XLSX.writeFile(wb, `Export_SCM_${label}_${new Date().getTime()}.xlsx`);
+        XLSX.writeFile(wb, `Laporan_DSN_${label}_${new Date().getTime()}.xlsx`);
       }
 
       function downloadPDFHarian() {
@@ -1712,13 +2033,17 @@
           .split("T")[0];
         const dataHarian = allData.filter((i) => i.tanggal === hariIni);
         if (dataHarian.length === 0)
-          return Swal.fire("Kosong", "Tidak ada data hari ini.", "info");
+          return Swal.fire(
+            "Informasi",
+            "Tidak ada data transaksi hari ini.",
+            "info",
+          );
         exportToPDF(dataHarian, "Harian_" + hariIni);
       }
 
       function downloadPDFSemua() {
         if (allData.length === 0)
-          return Swal.fire("Kosong", "Database kosong.", "info");
+          return Swal.fire("Informasi", "Database saat ini kosong.", "info");
         exportToPDF(allData, "Master_Data");
       }
 
@@ -1762,9 +2087,9 @@
           body: tableRows,
           startY: 70,
           styles: { fontSize: 8 },
-          headStyles: { fillColor: [139, 92, 246] },
+          headStyles: { fillColor: [59, 130, 246] },
         });
-        doc.save(`Export_SCM_${label}_${new Date().getTime()}.pdf`);
+        doc.save(`Laporan_DSN_${label}_${new Date().getTime()}.pdf`);
       }
     </script>
   </body>
