@@ -11,7 +11,7 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>Website - PT. Daya Sakti Niaga</title>
+    <title>Scanner - PT. Daya Sakti Niaga</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- SCRIPT LIBRARY ASLI -->
     <script
       type="text/javascript"
       src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"
@@ -44,12 +43,10 @@
         --warning: #f59e0b;
         --danger: #e11d48;
 
-        /* Premium Glass Variables */
-        --glass-bg: rgba(15, 23, 42, 0.4);
-        --glass-panel: rgba(15, 23, 42, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.12);
-        --glass-highlight: rgba(255, 255, 255, 0.05);
-        --glass-blur: blur(28px);
+        --glass-bg: rgba(15, 23, 42, 0.2);
+        --glass-panel: rgba(15, 23, 42, 0.45);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --glass-blur: blur(12px);
 
         --text-primary: #f8fafc;
         --text-secondary: #cbd5e1;
@@ -79,7 +76,6 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      /* Background Memanggil File Lokal daya.webp */
       body::before {
         content: "";
         position: fixed;
@@ -101,13 +97,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          180deg,
-          rgba(2, 6, 23, 0.75) 0%,
-          rgba(15, 23, 42, 0.95) 100%
-        );
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        background: rgba(2, 6, 23, 0.35);
         z-index: -1;
       }
 
@@ -117,7 +107,6 @@
         outline: none;
       }
 
-      /* --- TOPBAR PREMIUM RESPONSIVE --- */
       .topbar {
         background: rgba(15, 23, 42, 0.6);
         backdrop-filter: var(--glass-blur);
@@ -155,7 +144,6 @@
         filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
       }
 
-      /* Animasi Teks Berjalan di Kanan */
       .typewriter-container {
         position: relative;
         flex-grow: 1;
@@ -201,23 +189,25 @@
         }
       }
 
-      /* --- FIXED BOTTOM NAVIGATION --- */
+      /* =====================================================================
+         DESAIN TERBARU MENU BAWAH (IKON NATIVE & GLOWING BOX)
+         ===================================================================== */
       .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
         max-width: 100%;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(40px) saturate(200%);
-        -webkit-backdrop-filter: blur(40px) saturate(200%);
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 24px 24px 0 0;
+        background: rgba(8, 12, 23, 0.85);
+        backdrop-filter: blur(48px) saturate(250%);
+        -webkit-backdrop-filter: blur(48px) saturate(250%);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px 30px 0 0;
         display: flex;
         justify-content: space-around;
-        padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
+        padding: 16px 10px calc(16px + env(safe-area-inset-bottom));
         z-index: 9999;
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.8);
       }
 
       .nav-item {
@@ -226,44 +216,76 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        color: var(--text-muted);
         cursor: pointer;
         flex: 1;
-        padding: 8px 4px;
-        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        padding: 4px;
         text-decoration: none;
+        position: relative;
+        z-index: 2;
       }
 
-      .nav-item i {
-        font-size: 1.35rem;
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      /* Efek Kotak Kaca Glow di belakang icon saat aktif */
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        width: 54px;
+        height: 54px;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.25),
+          rgba(59, 130, 246, 0.05)
+        );
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        border-radius: 18px;
+        box-shadow:
+          0 4px 15px rgba(56, 189, 248, 0.3),
+          inset 0 2px 5px rgba(255, 255, 255, 0.1);
+        z-index: -1;
+        opacity: 0;
+        transform: scale(0.5) translateY(10px);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
+      /* Pengaturan Ikon Native */
+      .nav-item .nav-icon {
+        font-size: 1.45rem;
+        color: #64748b; /* Warna abu redup saat mati */
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 2;
+      }
+
+      /* Teks Keterangan Menu Bawah */
       .nav-item span {
         font-size: 0.65rem;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.5px;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+
+      /* ----- EFEK SAAT MENU DIKLIK (AKTIF) ----- */
+      .nav-item.active::before {
         opacity: 1;
-        height: auto;
-        overflow: visible;
-        transition: color 0.3s ease;
+        transform: scale(1) translateY(-8px);
       }
 
-      .nav-item.active {
-        color: #38bdf8;
-      }
-
-      .nav-item.active i {
-        transform: translateY(-4px);
-        color: #38bdf8;
-        text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);
+      .nav-item.active .nav-icon {
+        transform: translateY(-8px) scale(1.15); /* Melompat naik & membesar */
+        color: #ffffff;
+        background: linear-gradient(135deg, #38bdf8, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 6px 12px rgba(56, 189, 248, 0.6));
       }
 
       .nav-item.active span {
-        color: #ffffff;
+        color: #38bdf8;
+        transform: translateY(2px);
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
       }
 
-      /* Transitions */
       .view-page {
         display: none;
         opacity: 0;
@@ -286,17 +308,15 @@
         }
       }
 
-      /* Layout */
       .container {
         padding: 20px 16px;
-        padding-bottom: calc(120px + env(safe-area-inset-bottom));
+        padding-bottom: calc(140px + env(safe-area-inset-bottom));
         max-width: 800px;
         margin: 0 auto;
         width: 100%;
         position: relative;
       }
 
-      /* Premium Glass Cards */
       .card {
         background: var(--glass-panel);
         backdrop-filter: var(--glass-blur);
@@ -321,7 +341,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.25),
+          rgba(255, 255, 255, 0.4),
           transparent
         );
       }
@@ -351,7 +371,6 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
 
-      /* Advanced Scanner Aesthetics */
       .scanner-wrapper {
         position: relative;
         margin-bottom: 30px;
@@ -481,7 +500,9 @@
 
       .floating-controls {
         display: flex;
-        gap: 8px; /* Jarak diperkecil agar 4 tombol muat sejajar */
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 8px;
         align-items: center;
         justify-content: center;
         background: rgba(15, 23, 42, 0.85);
@@ -496,8 +517,8 @@
           0 15px 30px rgba(0, 0, 0, 0.7),
           inset 0 1px 1px rgba(255, 255, 255, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        width: fit-content;
-        max-width: 96%; /* Mencegah kotak keluar dari batas layar HP */
+        width: max-content;
+        max-width: 95vw;
         margin-left: auto;
         margin-right: auto;
       }
@@ -512,14 +533,14 @@
         justify-content: center;
         color: var(--text-primary);
         transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        flex-shrink: 0; /* Mencegah tombol menjadi gepeng */
+        flex-shrink: 0;
       }
       .btn:active {
         transform: scale(0.92);
       }
 
       .btn-icon {
-        width: 44px; /* Ukuran disesuaikan agar pas di layar kecil */
+        width: 44px;
         height: 44px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.05);
@@ -535,7 +556,6 @@
         border-color: var(--warning);
         box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
       }
-
       .btn-res.active {
         background: var(--danger);
         color: #fff;
@@ -545,7 +565,7 @@
 
       .btn-scan {
         padding: 0 20px;
-        height: 44px; /* Menyamakan tinggi tombol tulisan dengan tombol icon */
+        height: 44px;
         background: linear-gradient(
           135deg,
           var(--primary),
@@ -591,10 +611,6 @@
         box-shadow:
           0 0 0 4px rgba(56, 189, 248, 0.2),
           inset 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-      .form-control::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 500;
       }
 
       .manual-input-wrapper {
@@ -655,8 +671,14 @@
         border-radius: 6px;
         font-weight: 700;
         font-family: "Space Grotesk", monospace;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         border: 1px solid rgba(255, 255, 255, 0.15);
+        display: inline-block;
+        white-space: normal;
+        word-break: break-all;
+        min-width: 140px;
+        letter-spacing: 1px;
+        line-height: 1.4;
       }
 
       .btn-del {
@@ -685,6 +707,7 @@
         gap: 12px;
         margin-bottom: 28px;
       }
+
       .btn-export-big {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--glass-border);
@@ -699,37 +722,21 @@
         position: relative;
         overflow: hidden;
       }
-      .btn-export-big::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.1) 0%,
-          transparent 100%
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
       .btn-export-big:hover {
         background: rgba(255, 255, 255, 0.08);
         border-color: rgba(255, 255, 255, 0.3);
         transform: translateY(-3px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
       }
-      .btn-export-big:hover::after {
-        opacity: 1;
-      }
+
       .icon-original {
-        width: 44px;
-        height: 44px;
+        width: 60px;
+        height: 60px;
         filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
-        position: relative;
         z-index: 2;
         transition: transform 0.3s;
+        object-fit: contain;
+        border-radius: 12px;
       }
       .btn-export-big:hover .icon-original {
         transform: scale(1.1);
@@ -739,7 +746,6 @@
         font-weight: 800;
         color: #ffffff;
         letter-spacing: 0.5px;
-        position: relative;
         z-index: 2;
         text-align: center;
       }
@@ -781,6 +787,9 @@
         }
       }
 
+      div:where(.swal2-container) {
+        z-index: 10000 !important;
+      }
       div:where(.swal2-container) div:where(.swal2-popup) {
         background: rgba(15, 23, 42, 0.95) !important;
         backdrop-filter: blur(40px) saturate(200%) !important;
@@ -795,6 +804,8 @@
         width: 90% !important;
         max-width: 400px !important;
         padding: 20px !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
       }
       .swal2-input {
         background: rgba(0, 0, 0, 0.4) !important;
@@ -840,18 +851,6 @@
       <div class="topbar-title">
         <i class="fas fa-qrcode"></i> PT. Daya Sakti Niaga
       </div>
-      <span
-        id="engineBadge"
-        style="
-          display: none;
-          font-size: 10px;
-          background: var(--success);
-          padding: 2px 6px;
-          border-radius: 4px;
-          color: white;
-          font-weight: 800;
-        "
-      ></span>
       <div class="typewriter-container">
         <div class="typewriter-text">
           PT. DAYA SAKTI NIAGA - Jl. Kapten Darmo Sugondo No.2, Indro,
@@ -869,7 +868,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> Pati Bisa Aminnn!!
+            <i class="fas fa-camera-viewfinder"></i> Pasti Bisa Aminnn!!
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -901,7 +900,6 @@
                   >HD</span
                 >
               </button>
-
               <button
                 class="btn btn-icon"
                 id="btnTorch"
@@ -921,6 +919,17 @@
               </button>
             </div>
           </div>
+          <p
+            style="
+              text-align: center;
+              font-size: 0.75rem;
+              color: var(--text-muted);
+              margin-bottom: 0;
+            "
+          >
+            *Posisikan seluruh garis barcode panjang secara horizontal agar
+            masuk ke dalam frame biru.
+          </p>
 
           <div class="input-group" style="margin-top: 15px; margin-bottom: 0">
             <label>Input Manual (Darurat)</label>
@@ -1131,7 +1140,6 @@
           <div class="card-header">
             <i class="fas fa-file-export"></i> Pusat Unduhan Laporan
           </div>
-
           <label
             style="
               display: block;
@@ -1144,41 +1152,22 @@
             "
             >Laporan Sesi Hari Ini</label
           >
+
           <div class="export-grid">
             <button class="btn btn-export-big" onclick="downloadExcelHarian()">
-              <svg
+              <img
+                src="https://lh3.googleusercontent.com/d/1jKqTVOd3Su5O4XZmLX1JtNcd7XC6BELz"
                 class="icon-original"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#16a34a"
-                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
-                />
-                <path fill="#15803d" d="M29 6v10h10L29 6z" />
-                <path
-                  fill="#ffffff"
-                  d="M21.5 29.5l-2.6-4 2.6-4h-2.1l-1.6 2.7-1.6-2.7h-2l2.5 4-2.7 4.2h2.2l1.7-2.9 1.7 2.9h2.1z"
-                />
-              </svg>
+                alt="Excel Harian"
+              />
               <div>Excel Harian</div>
             </button>
             <button class="btn btn-export-big" onclick="downloadPDFHarian()">
-              <svg
+              <img
+                src="https://lh3.googleusercontent.com/d/1XuYRpVVy1ZYzxDRVboXtRQUBTxPe0yF6"
                 class="icon-original"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#e11d48"
-                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
-                />
-                <path fill="#be123c" d="M29 6v10h10L29 6z" />
-                <path
-                  fill="#ffffff"
-                  d="M19.4 29.3c-1.1-2.1-2.1-4.7-2.1-5.7 0-1.1.6-1.6 1.3-1.6.5 0 1 .3 1.2.9.2.6.2 1.3 0 2.2-.4 1.7-1.3 3.6-2.1 5.3-.2.4-.4.8-.6 1.2 1.3-.3 2.7-.6 4-1 .9-2.3 2-4.1 2.8-5.3.6-.8 1.1-1.3 1.3-1.3.3 0 .4.2.4.6 0 .8-1.2 2.5-3.3 4.3-.9.7-1.8 1.4-2.8 2 1.2 1.1 2.5 2.1 3.9 3.2 1.5 1.1 2.7 1.8 3.5 1.8.6 0 1-.3 1.2-.8.2-.5.1-1-.2-1.3-.6-.6-1.7-.8-3.1-.7.6-1.5 1.3-3.2 2.1-5.2 2.1-1.5 4-2.4 5.3-2.4 1.1 0 1.6.6 1.6 1.5 0 1-.9 1.9-2.3 2.5-1.5.6-3.4.8-5.6.5-1.6 1.9-3.2 4-4.8 6.2-.6 2.4-1.1 4.5-1.6 6.1-.3.9-.6 1.5-1 1.7-.3.2-.7.2-1 0-.5-.3-.7-1-.6-2 .1-1.3.8-3.1 2.1-5.5-2.2-.4-4.3-.6-6.3-.6-2 0-3.5.2-4.4.6-1 .4-1.5 1-1.5 1.7 0 .8.6 1.3 1.6 1.3 1.5-.1 3.5-1.1 5.6-2.9z"
-                />
-              </svg>
+                alt="PDF Harian"
+              />
               <div>PDF Harian</div>
             </button>
           </div>
@@ -1197,39 +1186,19 @@
           >
           <div class="export-grid">
             <button class="btn btn-export-big" onclick="downloadExcelSemua()">
-              <svg
+              <img
+                src="https://lh3.googleusercontent.com/d/1jKqTVOd3Su5O4XZmLX1JtNcd7XC6BELz"
                 class="icon-original"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#16a34a"
-                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
-                />
-                <path fill="#15803d" d="M29 6v10h10L29 6z" />
-                <path
-                  fill="#ffffff"
-                  d="M21.5 29.5l-2.6-4 2.6-4h-2.1l-1.6 2.7-1.6-2.7h-2l2.5 4-2.7 4.2h2.2l1.7-2.9 1.7 2.9h2.1z"
-                />
-              </svg>
+                alt="Master Excel"
+              />
               <div>Master Excel</div>
             </button>
             <button class="btn btn-export-big" onclick="downloadPDFSemua()">
-              <svg
+              <img
+                src="https://lh3.googleusercontent.com/d/1XuYRpVVy1ZYzxDRVboXtRQUBTxPe0yF6"
                 class="icon-original"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#e11d48"
-                  d="M29 6H15c-1.1 0-2 .9-2 2v32c0 1.1.9 2 2 2h22c1.1 0 2-.9 2-2V16L29 6z"
-                />
-                <path fill="#be123c" d="M29 6v10h10L29 6z" />
-                <path
-                  fill="#ffffff"
-                  d="M19.4 29.3c-1.1-2.1-2.1-4.7-2.1-5.7 0-1.1.6-1.6 1.3-1.6.5 0 1 .3 1.2.9.2.6.2 1.3 0 2.2-.4 1.7-1.3 3.6-2.1 5.3-.2.4-.4.8-.6 1.2 1.3-.3 2.7-.6 4-1 .9-2.3 2-4.1 2.8-5.3.6-.8 1.1-1.3 1.3-1.3.3 0 .4.2.4.6 0 .8-1.2 2.5-3.3 4.3-.9.7-1.8 1.4-2.8 2 1.2 1.1 2.5 2.1 3.9 3.2 1.5 1.1 2.7 1.8 3.5 1.8.6 0 1-.3 1.2-.8.2-.5.1-1-.2-1.3-.6-.6-1.7-.8-3.1-.7.6-1.5 1.3-3.2 2.1-5.2 2.1-1.5 4-2.4 5.3-2.4 1.1 0 1.6.6 1.6 1.5 0 1-.9 1.9-2.3 2.5-1.5.6-3.4.8-5.6.5-1.6 1.9-3.2 4-4.8 6.2-.6 2.4-1.1 4.5-1.6 6.1-.3.9-.6 1.5-1 1.7-.3.2-.7.2-1 0-.5-.3-.7-1-.6-2 .1-1.3.8-3.1 2.1-5.5-2.2-.4-4.3-.6-6.3-.6-2 0-3.5.2-4.4.6-1 .4-1.5 1-1.5 1.7 0 .8.6 1.3 1.6 1.3 1.5-.1 3.5-1.1 5.6-2.9z"
-                />
-              </svg>
+                alt="Master PDF"
+              />
               <div>Master PDF</div>
             </button>
           </div>
@@ -1241,34 +1210,41 @@
               margin: 30px 0 20px 0;
             "
           />
+
           <button
             class="btn btn-export-big btn-danger-zone"
             onclick="hapusSemuaData()"
           >
-            <i class="fas fa-triangle-exclamation"></i>
-            <div>Format Total Database Aplikasi</div>
+            <i class="fas fa-trash-can"></i>
+            <div>Hapus Total Seluruh Database</div>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION (Fixed) -->
+    <!-- =========================================================
+         BOTTOM NAVIGATION MENGGUNAKAN VECTOR IKON ASLI SUPER TAJAM
+         ========================================================= -->
     <nav class="bottom-nav">
-      <a class="nav-item active" onclick="switchPage('view-scan', this)"
-        ><i class="fas fa-qrcode"></i><span>SCANNER</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-session', this)"
-        ><i class="fas fa-clipboard-check"></i><span>HARI INI</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-database', this)"
-        ><i class="fas fa-server"></i><span>DATABASE</span></a
-      >
-      <a class="nav-item" onclick="switchPage('view-export', this)"
-        ><i class="fas fa-download"></i><span>UNDUH</span></a
-      >
+      <a class="nav-item active" onclick="switchPage('view-scan', this)">
+        <i class="fas fa-qrcode nav-icon"></i>
+        <span>SCANNER</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-session', this)">
+        <i class="fas fa-calendar-check nav-icon"></i>
+        <span>HARI INI</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-database', this)">
+        <i class="fas fa-server nav-icon"></i>
+        <span>DATABASE</span>
+      </a>
+      <a class="nav-item" onclick="switchPage('view-export', this)">
+        <i class="fas fa-file-arrow-down nav-icon"></i>
+        <span>UNDUH</span>
+      </a>
     </nav>
 
-    <!-- SCRIPT JAVASCRIPT LOGIKA UPDATE FINAL -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
       const STORAGE_KEY = "SCMBarcodeMasterData";
       let allData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1278,7 +1254,7 @@
       let currentCam = "environment";
       let lastErrorTime = 0;
       let isTorchOn = false;
-      let isHD = true; // State default untuk mode HD (High Resolution)
+      let isHD = true;
       let streamTrack = null;
       let scanLoopFrame = null;
       let audioCtx = null;
@@ -1356,7 +1332,6 @@
         if (pageId === "view-database") renderDatabase();
       }
 
-      /* DETEKSI PERANGKAT (COMPATIBILITY SEMUA HP ANDROID/IPHONE) */
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1378,11 +1353,6 @@
             "codabar",
           ],
         });
-      } else {
-        //document.getElementById("engineBadge").innerText = isIOS
-        // ? "IOS PRO"
-        //: "SW MODE";
-        //document.getElementById("engineBadge").style.display = "inline-block";
       }
 
       function getZXingHints() {
@@ -1414,42 +1384,7 @@
         if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
-      /* MASTER DEFAULT */
-      const DEFAULT_MASTER = {
-        "1593103505404312800401050003": {
-          jenisBarcode: "Barcode 2",
-          panjang: 305,
-          lebar: 14,
-          potongan: 24,
-          persegi: "10.25",
-          golongan: '10 (014085) ("3")',
-        },
-        "15931035O5404312800401050003": {
-          jenisBarcode: "Barcode 2",
-          panjang: 305,
-          lebar: 14,
-          potongan: 24,
-          persegi: "10.25",
-          golongan: '10 (014085) ("3")',
-        },
-        "1111191600503202881401070011": {
-          jenisBarcode: "Barcode 3",
-          panjang: 280,
-          lebar: 15,
-          potongan: 24,
-          persegi: "10.08",
-          golongan: "FFP BX003187 (11)",
-        },
-        "1111808100304302201401090009": {
-          jenisBarcode: "Barcode 3",
-          panjang: 300,
-          lebar: 13,
-          potongan: 24,
-          persegi: "9.36",
-          golongan: "FFP BX004129 (9)",
-        },
-      };
-
+      const DEFAULT_MASTER = {};
       let masterDB = JSON.parse(localStorage.getItem("SCMMasterDB")) || {};
       Object.assign(masterDB, DEFAULT_MASTER);
       localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
@@ -1487,8 +1422,56 @@
         return null;
       }
 
-      function processBarcodeDetected(code, format) {
-        code = code.trim().toUpperCase();
+      function autoParseBarcode2And3(code) {
+        if (
+          code.startsWith("111") ||
+          code.startsWith("112") ||
+          code.startsWith("113")
+        ) {
+          let p = 280,
+            l = 15,
+            pot = 24,
+            gol = "FFP BX (Auto)";
+          if (code.includes("1916") || code.includes("28814")) {
+            p = 280;
+            l = 15;
+            pot = 24;
+            gol = "FFP BX003187 (11)";
+          } else if (code.includes("8081")) {
+            p = 300;
+            l = 13;
+            pot = 24;
+            gol = "FFP BX004129 (9)";
+          }
+          return {
+            jenisBarcode: "Barcode 3",
+            panjang: p,
+            lebar: l,
+            potongan: pot,
+            persegi: ((p * l * pot) / 10000).toFixed(2),
+            golongan: gol,
+          };
+        }
+        if (
+          code.startsWith("159") ||
+          code.startsWith("1001") ||
+          code.startsWith("101")
+        ) {
+          return {
+            jenisBarcode: "Barcode 2",
+            panjang: 305,
+            lebar: 14,
+            potongan: 24,
+            persegi: ((305 * 14 * 24) / 10000).toFixed(2),
+            golongan: "10 (014085)",
+          };
+        }
+        return null;
+      }
+
+      function processBarcodeDetected(rawCode, format) {
+        let code = rawCode.trim().toUpperCase().replace(/O/g, "0");
+
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
           if (now - lastErrorTime > 2000) {
@@ -1512,7 +1495,14 @@
           return;
         }
 
-        if (code.length >= 10) {
+        let autoData = autoParseBarcode2And3(code);
+        if (autoData) {
+          scannedCodesSet.add(code);
+          simpanData(code, format, autoData);
+          return;
+        }
+
+        if (code.length >= 8) {
           promptNewMasterData(code, format);
         }
       }
@@ -1527,7 +1517,7 @@
         Swal.fire({
           title: "Master Data Baru!",
           html: `
-            <div style="font-size:0.85rem; color:#38bdf8; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
+            <div style="font-size:0.85rem; color:#38bdf8; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem; letter-spacing: 1px; word-break: break-all;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
             <select id="m-jenis" class="swal2-input" style="width: 90%; font-size:14px; margin-bottom:8px;">
               <option value="Barcode 3" ${predictedType === "Barcode 3" ? "selected" : ""}>Ini Barcode 3</option>
               <option value="Barcode 2" ${predictedType === "Barcode 2" ? "selected" : ""}>Ini Barcode 2</option>
@@ -1576,14 +1566,11 @@
         });
       }
 
-      /* FUNGSI TOGGLE RESOLUSI (HD/SD) */
       async function toggleResolution() {
         isHD = !isHD;
         const btnRes = document.getElementById("btnRes");
         const resText = document.getElementById("resText");
-
         resText.innerText = isHD ? "HD" : "SD";
-
         if (isHD) {
           btnRes.classList.remove("active");
           Toast.fire({ icon: "info", title: "Mode HD Aktif (Akurat)" });
@@ -1591,8 +1578,6 @@
           btnRes.classList.add("active");
           Toast.fire({ icon: "info", title: "Mode SD Aktif (Lebih Cepat)" });
         }
-
-        // Restart kamera jika sedang menyala agar resolusi langsung berubah
         if (isScanning) {
           if (streamTrack) {
             streamTrack.stop();
@@ -1650,13 +1635,12 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            /* KONDISI RESOLUSI DINAMIS BERDASARKAN TOMBOL HD/SD */
             let constraints;
             if (isHD) {
               constraints = {
                 video: {
                   facingMode: { ideal: currentCam },
-                  width: { ideal: 4096 }, // Target 4K (Ultra HD)
+                  width: { ideal: 4096 },
                   height: { ideal: 2160 },
                 },
               };
@@ -1664,7 +1648,7 @@
               constraints = {
                 video: {
                   facingMode: { ideal: currentCam },
-                  width: { ideal: 1280 }, // Target 720p (Standar)
+                  width: { ideal: 1280 },
                   height: { ideal: 720 },
                 },
               };
@@ -1906,12 +1890,11 @@
         }
         dataArray.forEach((i, idx) => {
           const tr = document.createElement("tr");
-          // Perintah .substring(0, 10) telah dihapus sehingga {i.kode} tampil utuh.
-          // Ditambahkan letter-spacing agar angka sangat mudah dibaca orang awam.
+          let renderKode = `<span class="badge">${i.kode}</span>`;
           if (tableIdStr.includes("Db")) {
-            tr.innerHTML = `<td>${idx + 1}</td><td><span class="badge" style="letter-spacing: 1px;">${i.kode}</span></td><td><b>${i.golongan}</b></td><td>${i.panjang}</td><td>${i.lebar}</td><td>${i.potongan}</td><td>${i.persegi}</td><td>${formatTgl(i.tanggal)}</td><td>${i.jam.substring(0, 5)}</td><td><button class="btn-del" onclick="hapus(${i.id}, 'db')"><i class="fas fa-trash"></i></button></td>`;
+            tr.innerHTML = `<td>${idx + 1}</td><td>${renderKode}</td><td><b>${i.golongan}</b></td><td>${i.panjang}</td><td>${i.lebar}</td><td>${i.potongan}</td><td>${i.persegi}</td><td>${formatTgl(i.tanggal)}</td><td>${i.jam.substring(0, 5)}</td><td><button class="btn-del" onclick="hapus(${i.id}, 'db')"><i class="fas fa-trash"></i></button></td>`;
           } else {
-            tr.innerHTML = `<td>${idx + 1}</td><td><span class="badge" style="letter-spacing: 1px;">${i.kode}</span></td><td><b>${i.golongan}</b></td><td>${i.panjang}</td><td>${i.lebar}</td><td>${i.potongan}</td><td>${i.persegi}</td><td>${i.jam.substring(0, 5)}</td><td><button class="btn-del" onclick="hapus(${i.id}, 'today')"><i class="fas fa-trash"></i></button></td>`;
+            tr.innerHTML = `<td>${idx + 1}</td><td>${renderKode}</td><td><b>${i.golongan}</b></td><td>${i.panjang}</td><td>${i.lebar}</td><td>${i.potongan}</td><td>${i.persegi}</td><td>${i.jam.substring(0, 5)}</td><td><button class="btn-del" onclick="hapus(${i.id}, 'today')"><i class="fas fa-trash"></i></button></td>`;
           }
           tbody.appendChild(tr);
         });
