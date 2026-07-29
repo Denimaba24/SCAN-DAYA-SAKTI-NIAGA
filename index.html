@@ -185,8 +185,7 @@
       }
 
       /* =========================================================
-         MENU BAWAH (CLEAN, NATIVE, PROFESSIONAL UI)
-         Tidak ada efek AI glow yang lebay, murni fungsional 
+         MENU BAWAH DENGAN GAMBAR (PNG) PROFESIONAL
          ========================================================= */
       .bottom-nav {
         position: fixed;
@@ -197,7 +196,7 @@
         border-top: 1px solid #1e293b;
         display: flex;
         justify-content: space-around;
-        padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+        padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
         z-index: 9999;
       }
 
@@ -205,31 +204,40 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
         color: #64748b;
         text-decoration: none;
-        transition: color 0.2s ease;
         width: 25%;
         cursor: pointer;
       }
 
-      .nav-icon {
-        font-size: 1.3rem;
-        transition: transform 0.2s ease;
+      .nav-img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        opacity: 0.4;
+        transition: all 0.2s ease;
       }
 
       .nav-item span {
         font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.3px;
+        transition: color 0.2s ease;
       }
 
       .nav-item.active {
         color: #38bdf8;
       }
 
-      .nav-item.active .nav-icon {
-        transform: scale(1.15);
+      .nav-item.active .nav-img {
+        opacity: 1;
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+      }
+
+      .nav-item.active span {
+        color: #38bdf8;
       }
 
       .view-page {
@@ -583,6 +591,11 @@
         align-items: center;
         justify-content: center;
       }
+      .btn-del:hover {
+        color: #ffffff;
+        background: var(--danger);
+        border-color: var(--danger);
+      }
 
       .export-grid {
         display: grid;
@@ -609,13 +622,6 @@
         object-fit: contain;
         border-radius: 12px;
       }
-      .btn-export-big div {
-        font-size: 0.85rem;
-        font-weight: 800;
-        color: #ffffff;
-        letter-spacing: 0.5px;
-        text-align: center;
-      }
 
       .btn-danger-zone {
         background: rgba(225, 29, 72, 0.15);
@@ -641,7 +647,7 @@
         }
       }
 
-      /* PERBAIKAN: POPUP AGAR BISA DI-SCROLL KE BAWAH DENGAN LANCAR */
+      /* POPUP SCROLL FIX */
       div:where(.swal2-container) {
         z-index: 10000 !important;
       }
@@ -653,8 +659,8 @@
         width: 90% !important;
         max-width: 400px !important;
         padding: 20px !important;
-        max-height: 85vh !important; /* Batas tinggi */
-        overflow-y: auto !important; /* Aktifkan Scroll otomatis */
+        max-height: 85vh !important;
+        overflow-y: auto !important;
       }
       .swal2-input {
         background: rgba(0, 0, 0, 0.4) !important;
@@ -693,11 +699,23 @@
     </style>
   </head>
   <body>
-    <!-- TOP NAVIGATION -->
+     
     <div class="topbar">
+           
       <div class="topbar-title">
-        <i class="fas fa-qrcode"></i> PT. Daya Sakti Niaga
+                <i class="fas fa-qrcode"></i> PT. Daya Sakti Niaga      
       </div>
+           
+      <div class="typewriter-container">
+               
+        <div class="typewriter-text">
+                    PT. DAYA SAKTI NIAGA - Jl. Kapten Darmo Sugondo No.2, Indro,
+                    Karangkering, Kec. Kebomas, Kabupaten Gresik, Jawa Timur
+          61123        
+        </div>
+             
+      </div>
+         
     </div>
 
     <div class="pull-indicator" id="pullIndicator">
@@ -709,7 +727,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> SEMOGA LANCAR!
+            <i class="fas fa-camera-viewfinder"></i> Pasti Bisa Aminnn!!
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -760,7 +778,6 @@
               </button>
             </div>
           </div>
-          
 
           <div class="input-group" style="margin-top: 15px; margin-bottom: 0">
             <label>Input Manual (Darurat)</label>
@@ -1054,23 +1071,40 @@
     </div>
 
     <!-- =========================================================
-         BOTTOM NAVIGATION MENGGUNAKAN VECTOR IKON MANUSIAWI/PROFESIONAL
+         BOTTOM NAVIGATION MENGGUNAKAN LOGO GAMBAR (PNG) ASLI PROFESIONAL
+         Menggunakan Ikon Solid Material Design Standar Native
          ========================================================= -->
     <nav class="bottom-nav">
       <a class="nav-item active" onclick="switchPage('view-scan', this)">
-        <i class="fas fa-qrcode nav-icon"></i>
+        <img
+          src="https://img.icons8.com/material-rounded/96/ffffff/barcode-scanner.png"
+          class="nav-img"
+          alt="Scanner"
+        />
         <span>SCANNER</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-session', this)">
-        <i class="fas fa-calendar-check nav-icon"></i>
+        <img
+          src="https://img.icons8.com/material-rounded/96/ffffff/today.png"
+          class="nav-img"
+          alt="Hari Ini"
+        />
         <span>HARI INI</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-database', this)">
-        <i class="fas fa-server nav-icon"></i>
+        <img
+          src="https://img.icons8.com/material-rounded/96/ffffff/database.png"
+          class="nav-img"
+          alt="Database"
+        />
         <span>DATABASE</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-export', this)">
-        <i class="fas fa-file-arrow-down nav-icon"></i>
+        <img
+          src="https://img.icons8.com/material-rounded/96/ffffff/download--v1.png"
+          class="nav-img"
+          alt="Unduh"
+        />
         <span>UNDUH</span>
       </a>
     </nav>
@@ -1163,6 +1197,7 @@
         if (pageId === "view-database") renderDatabase();
       }
 
+      // PERBAIKAN: Identifikasi Native Hardware Scanner jika tersedia
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1170,20 +1205,24 @@
       let nativeDetector = null;
       let zxingReader = null;
 
-      if (hasNativeScanner && !isIOS) {
-        nativeDetector = new BarcodeDetector({
-          formats: [
-            "code_128",
-            "code_39",
-            "code_93",
-            "ean_13",
-            "ean_8",
-            "upc_a",
-            "upc_e",
-            "itf",
-            "codabar",
-          ],
-        });
+      if (hasNativeScanner) {
+        try {
+          nativeDetector = new BarcodeDetector({
+            formats: [
+              "code_128",
+              "code_39",
+              "code_93",
+              "ean_13",
+              "ean_8",
+              "upc_a",
+              "upc_e",
+              "itf",
+              "codabar",
+            ],
+          });
+        } catch (e) {
+          nativeDetector = null;
+        }
       }
 
       function getZXingHints() {
@@ -1254,16 +1293,65 @@
         return null;
       }
 
+      function autoParseBarcode2And3(code) {
+        let cleanCode = code.trim().toUpperCase();
+
+        // Logika Otomatis Barcode 3
+        if (
+          cleanCode.startsWith("111") ||
+          cleanCode.startsWith("112") ||
+          cleanCode.startsWith("113")
+        ) {
+          let p = 280,
+            l = 15,
+            pot = 24,
+            gol = "FFP BX (Auto)";
+          if (cleanCode.includes("1916") || cleanCode.includes("28814")) {
+            p = 280;
+            l = 15;
+            pot = 24;
+            gol = "FFP BX003187 (11)";
+          } else if (cleanCode.includes("8081")) {
+            p = 300;
+            l = 13;
+            pot = 24;
+            gol = "FFP BX004129 (9)";
+          }
+          return {
+            jenisBarcode: "Barcode 3",
+            panjang: p,
+            lebar: l,
+            potongan: pot,
+            persegi: ((p * l * pot) / 10000).toFixed(2),
+            golongan: gol,
+          };
+        }
+
+        // Logika Otomatis Barcode 2
+        if (cleanCode.startsWith("159") || cleanCode.startsWith("10")) {
+          return {
+            jenisBarcode: "Barcode 2",
+            panjang: 305,
+            lebar: 14,
+            potongan: 24,
+            persegi: ((305 * 14 * 24) / 10000).toFixed(2),
+            golongan: "10 (014085)",
+          };
+        }
+        return null;
+      }
+
       function processBarcodeDetected(rawCode, format) {
-        // PERBAIKAN: Pembersihan String dan Pencegahan Spam Popup karena Barcode terpotong kamera.
+        // PERBAIKAN: Hapus karakter aneh dan ganti O menjadi 0
         let code = rawCode
           .trim()
           .toUpperCase()
           .replace(/O/g, "0")
           .replace(/[^A-Z0-9]/g, "");
 
-        // PENCEGAH SPAM: Jika lensa hanya menangkap sepotong (di bawah 15 huruf/angka), abaikan!
-        if (code.length < 15) return;
+        // PERBAIKAN KRUSIAL: Tolak kode jika tertangkap setengah/kurang dari 18 karakter
+        // Mencegah munculnya popup manual palsu akibat kamera salah fokus
+        if (code.length < 18) return;
 
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
@@ -1275,14 +1363,14 @@
           return;
         }
 
-        // 1. Cek di Memori Master Database Terlebih Dahulu (Berlaku untuk Barcode 2 & 3)
+        // Cek Database Memori
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
 
-        // 2. Gunakan Rumus Pengukuran (Berlaku khusus untuk Barcode 1)
+        // Paksa Masuk Barcode 1
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
@@ -1290,7 +1378,15 @@
           return;
         }
 
-        // 3. Jika kode panjang, utuh, tapi memang belum dikenali, panggil Master Data Baru
+        // Paksa Masuk Barcode 2 dan 3 Otomatis
+        let autoData = autoParseBarcode2And3(code);
+        if (autoData) {
+          scannedCodesSet.add(code);
+          simpanData(code, format, autoData);
+          return;
+        }
+
+        // JIKA DAN HANYA JIKA kodenya panjang (>18) namun sama sekali tidak bisa dikenali rumusnya
         promptNewMasterData(code, format);
       }
 
@@ -1360,7 +1456,7 @@
         resText.innerText = isHD ? "HD" : "SD";
         if (isHD) {
           btnRes.classList.remove("active");
-          Toast.fire({ icon: "info", title: "Mode HD Aktif (Akurat)" });
+          Toast.fire({ icon: "info", title: "Mode HD Aktif (Lebih Tajam)" });
         } else {
           btnRes.classList.add("active");
           Toast.fire({ icon: "info", title: "Mode SD Aktif (Lebih Cepat)" });
@@ -1422,21 +1518,24 @@
             btn.classList.add("stop");
             isScanning = true;
 
+            // PERBAIKAN RESPONSIVITAS KAMERA:
+            // HD diturunkan ke 720p (Ideal untuk Baca Barcode WebRTC) agar iPhone tidak error/blank
+            // SD diturunkan ke 480p (VGA) agar super ngebut di HP spesifikasi rendah.
             let constraints;
             if (isHD) {
               constraints = {
                 video: {
-                  facingMode: { ideal: currentCam },
-                  width: { ideal: 1920 },
-                  height: { ideal: 1080 },
+                  facingMode: "environment",
+                  width: { ideal: 1280 },
+                  height: { ideal: 720 },
                 },
               };
             } else {
               constraints = {
                 video: {
-                  facingMode: { ideal: currentCam },
-                  width: { ideal: 1280 },
-                  height: { ideal: 720 },
+                  facingMode: "environment",
+                  width: { ideal: 640 },
+                  height: { ideal: 480 },
                 },
               };
             }
@@ -1445,6 +1544,7 @@
             try {
               stream = await navigator.mediaDevices.getUserMedia(constraints);
             } catch (e) {
+              // Mode Penyelamat (Fallback) jika iPhone menolak permintaan HD/SD yang spesifik
               stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: "environment" },
               });
@@ -1455,18 +1555,6 @@
             video.setAttribute("playsinline", "");
             video.srcObject = stream;
             streamTrack = stream.getVideoTracks()[0];
-
-            try {
-              const capabilities = streamTrack.getCapabilities();
-              if (
-                capabilities.focusMode &&
-                capabilities.focusMode.includes("continuous")
-              ) {
-                await streamTrack.applyConstraints({
-                  advanced: [{ focusMode: "continuous" }],
-                });
-              }
-            } catch (err) {}
 
             await new Promise((resolve) => {
               video.onloadedmetadata = () => resolve();
@@ -1492,7 +1580,8 @@
               scanLoopFrame = requestAnimationFrame(detectLoop);
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 40;
+              // PERBAIKAN WAKTU BACA: Disetel ke 150ms agar stabil di Android & iPhone
+              zxingReader.timeBetweenDecodingAttempts = 150;
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
