@@ -189,9 +189,6 @@
         }
       }
 
-      /* =====================================================================
-         DESAIN TERBARU MENU BAWAH (IKON NATIVE & GLOWING BOX)
-         ===================================================================== */
       .bottom-nav {
         position: fixed;
         bottom: 0;
@@ -224,7 +221,6 @@
         z-index: 2;
       }
 
-      /* Efek Kotak Kaca Glow di belakang icon saat aktif */
       .nav-item::before {
         content: "";
         position: absolute;
@@ -247,15 +243,13 @@
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
-      /* Pengaturan Ikon Native */
       .nav-item .nav-icon {
         font-size: 1.45rem;
-        color: #64748b; /* Warna abu redup saat mati */
+        color: #64748b;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 2;
       }
 
-      /* Teks Keterangan Menu Bawah */
       .nav-item span {
         font-size: 0.65rem;
         font-weight: 800;
@@ -265,14 +259,13 @@
         z-index: 2;
       }
 
-      /* ----- EFEK SAAT MENU DIKLIK (AKTIF) ----- */
       .nav-item.active::before {
         opacity: 1;
         transform: scale(1) translateY(-8px);
       }
 
       .nav-item.active .nav-icon {
-        transform: translateY(-8px) scale(1.15); /* Melompat naik & membesar */
+        transform: translateY(-8px) scale(1.15);
         color: #ffffff;
         background: linear-gradient(135deg, #38bdf8, #3b82f6);
         -webkit-background-clip: text;
@@ -868,7 +861,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> SEMOGA BISAA YA!
+            <i class="fas fa-camera-viewfinder"></i> SEMOGA LANCARRR
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -884,7 +877,6 @@
             </div>
 
             <div class="floating-controls">
-           
               <button
                 class="btn btn-icon btn-res"
                 id="btnRes"
@@ -919,14 +911,6 @@
               </button>
             </div>
           </div>
-          <p
-            style="
-              text-align: center;
-              font-size: 0.75rem;
-              color: var(--text-muted);
-              margin-bottom: 0;
-            "
-        
 
           <div class="input-group" style="margin-top: 15px; margin-bottom: 0">
             <label>Input Manual (Darurat)</label>
@@ -1019,7 +1003,6 @@
         </div>
       </div>
 
-      <!-- VIEW: DATABASE -->
       <div id="view-database" class="view-page">
         <div class="card">
           <div class="card-header">
@@ -1131,7 +1114,6 @@
         </div>
       </div>
 
-      <!-- VIEW: EXPORT -->
       <div id="view-export" class="view-page">
         <div class="card">
           <div class="card-header">
@@ -1219,7 +1201,6 @@
       </div>
     </div>
 
-  
     <nav class="bottom-nav">
       <a class="nav-item active" onclick="switchPage('view-scan', this)">
         <i class="fas fa-qrcode nav-icon"></i>
@@ -1327,6 +1308,9 @@
         if (pageId === "view-database") renderDatabase();
       }
 
+      // ---------------------------------------------------------
+      // MESIN PEMINDAI KEMBALI KE VERSI PALING STABIL (TIDAK LAG)
+      // ---------------------------------------------------------
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1385,13 +1369,15 @@
       localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
 
       function parseBarcode1(raw) {
-        if (raw.startsWith("86") && raw.length >= 24) {
+        // Pembersihan karakter dasar namun mempertahankan huruf kapital
+        let cleanRaw = raw.trim().toUpperCase();
+        if (cleanRaw.startsWith("86") && cleanRaw.length >= 24) {
           try {
-            const p_str = raw.slice(-4);
-            const w_str = raw.slice(-9, -4);
-            const l_str = raw.slice(-12, -9);
-            const ext_str = raw.slice(-16, -12);
-            const prefix = raw.slice(2, -16);
+            const p_str = cleanRaw.slice(-4);
+            const w_str = cleanRaw.slice(-9, -4);
+            const l_str = cleanRaw.slice(-12, -9);
+            const ext_str = cleanRaw.slice(-16, -12);
+            const prefix = cleanRaw.slice(2, -16);
             let golongan = prefix.replace(/^0+/, "");
             if (!golongan) golongan = "-";
             const p_indo = parseInt(l_str, 10);
@@ -1418,21 +1404,22 @@
       }
 
       function autoParseBarcode2And3(code) {
+        let cleanCode = code.trim().toUpperCase();
         if (
-          code.startsWith("111") ||
-          code.startsWith("112") ||
-          code.startsWith("113")
+          cleanCode.startsWith("111") ||
+          cleanCode.startsWith("112") ||
+          cleanCode.startsWith("113")
         ) {
           let p = 280,
             l = 15,
             pot = 24,
             gol = "FFP BX (Auto)";
-          if (code.includes("1916") || code.includes("28814")) {
+          if (cleanCode.includes("1916") || cleanCode.includes("28814")) {
             p = 280;
             l = 15;
             pot = 24;
             gol = "FFP BX003187 (11)";
-          } else if (code.includes("8081")) {
+          } else if (cleanCode.includes("8081")) {
             p = 300;
             l = 13;
             pot = 24;
@@ -1448,9 +1435,9 @@
           };
         }
         if (
-          code.startsWith("159") ||
-          code.startsWith("1001") ||
-          code.startsWith("101")
+          cleanCode.startsWith("159") ||
+          cleanCode.startsWith("1001") ||
+          cleanCode.startsWith("101")
         ) {
           return {
             jenisBarcode: "Barcode 2",
@@ -1465,6 +1452,7 @@
       }
 
       function processBarcodeDetected(rawCode, format) {
+        // Ganti 'O' kapital dengan angka Nol untuk keamanan
         let code = rawCode.trim().toUpperCase().replace(/O/g, "0");
 
         if (scannedCodesSet.has(code)) {
@@ -1568,7 +1556,7 @@
         resText.innerText = isHD ? "HD" : "SD";
         if (isHD) {
           btnRes.classList.remove("active");
-          Toast.fire({ icon: "info", title: "Mode HD Aktif (Akurat)" });
+          Toast.fire({ icon: "info", title: "Mode HD Aktif (Lebih Tajam)" });
         } else {
           btnRes.classList.add("active");
           Toast.fire({ icon: "info", title: "Mode SD Aktif (Lebih Cepat)" });
@@ -1630,6 +1618,7 @@
             btn.classList.add("stop");
             isScanning = true;
 
+            // KEMBALI KE CONSTRAINTS KAMERA PALING AMAN DAN STABIL SEPERTI VERSI SEBELUMNYA
             let constraints;
             if (isHD) {
               constraints = {
@@ -1663,18 +1652,6 @@
             video.setAttribute("playsinline", "");
             video.srcObject = stream;
             streamTrack = stream.getVideoTracks()[0];
-
-            try {
-              const capabilities = streamTrack.getCapabilities();
-              if (
-                capabilities.focusMode &&
-                capabilities.focusMode.includes("continuous")
-              ) {
-                await streamTrack.applyConstraints({
-                  advanced: [{ focusMode: "continuous" }],
-                });
-              }
-            } catch (err) {}
 
             await new Promise((resolve) => {
               video.onloadedmetadata = () => resolve();
