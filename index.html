@@ -243,11 +243,14 @@
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
-      .nav-item .nav-icon {
-        font-size: 1.45rem;
-        color: #64748b;
+      .nav-item .nav-img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 2;
+        opacity: 0.4;
+        filter: grayscale(100%) contrast(0.8);
       }
 
       .nav-item span {
@@ -264,13 +267,11 @@
         transform: scale(1) translateY(-8px);
       }
 
-      .nav-item.active .nav-icon {
-        transform: translateY(-8px) scale(1.15);
-        color: #ffffff;
-        background: linear-gradient(135deg, #38bdf8, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 6px 12px rgba(56, 189, 248, 0.6));
+      .nav-item.active .nav-img {
+        transform: translateY(-8px) scale(1.25);
+        opacity: 1;
+        filter: grayscale(0%) contrast(1.1)
+          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
       }
 
       .nav-item.active span {
@@ -861,7 +862,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> SEMOGA LANCARRR
+            <i class="fas fa-camera-viewfinder"></i> SEMOGA BERHASILLL
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -877,6 +878,7 @@
             </div>
 
             <div class="floating-controls">
+              <!-- TOMBOL RESOLUSI DINAMIS (HD/SD) -->
               <button
                 class="btn btn-icon btn-res"
                 id="btnRes"
@@ -1003,6 +1005,7 @@
         </div>
       </div>
 
+      <!-- VIEW: DATABASE -->
       <div id="view-database" class="view-page">
         <div class="card">
           <div class="card-header">
@@ -1114,6 +1117,7 @@
         </div>
       </div>
 
+      <!-- VIEW: EXPORT -->
       <div id="view-export" class="view-page">
         <div class="card">
           <div class="card-header">
@@ -1201,21 +1205,40 @@
       </div>
     </div>
 
+    <!-- =========================================================
+         BOTTOM NAVIGATION DENGAN SET GAMBAR 3D MODERN + ANIMASI GLOW
+         ========================================================= -->
     <nav class="bottom-nav">
       <a class="nav-item active" onclick="switchPage('view-scan', this)">
-        <i class="fas fa-qrcode nav-icon"></i>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/8244/8244509.png"
+          class="nav-img"
+          alt="Scanner"
+        />
         <span>SCANNER</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-session', this)">
-        <i class="fas fa-calendar-check nav-icon"></i>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/8244/8244506.png"
+          class="nav-img"
+          alt="Hari Ini"
+        />
         <span>HARI INI</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-database', this)">
-        <i class="fas fa-server nav-icon"></i>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/8244/8244533.png"
+          class="nav-img"
+          alt="Database"
+        />
         <span>DATABASE</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-export', this)">
-        <i class="fas fa-file-arrow-down nav-icon"></i>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/9502/9502047.png"
+          class="nav-img"
+          alt="Unduh"
+        />
         <span>UNDUH</span>
       </a>
     </nav>
@@ -1308,9 +1331,6 @@
         if (pageId === "view-database") renderDatabase();
       }
 
-      // ---------------------------------------------------------
-      // MESIN PEMINDAI KEMBALI KE VERSI PALING STABIL (TIDAK LAG)
-      // ---------------------------------------------------------
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1369,7 +1389,6 @@
       localStorage.setItem("SCMMasterDB", JSON.stringify(masterDB));
 
       function parseBarcode1(raw) {
-        // Pembersihan karakter dasar namun mempertahankan huruf kapital
         let cleanRaw = raw.trim().toUpperCase();
         if (cleanRaw.startsWith("86") && cleanRaw.length >= 24) {
           try {
@@ -1452,8 +1471,13 @@
       }
 
       function processBarcodeDetected(rawCode, format) {
-        // Ganti 'O' kapital dengan angka Nol untuk keamanan
-        let code = rawCode.trim().toUpperCase().replace(/O/g, "0");
+        // PERBAIKAN: Blokir Partial Scan agar Popup Manual tidak keluar sembarangan
+        let code = rawCode
+          .trim()
+          .toUpperCase()
+          .replace(/O/g, "0")
+          .replace(/[^a-zA-Z0-9]/g, "");
+        if (code.length < 18) return;
 
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
@@ -1485,9 +1509,7 @@
           return;
         }
 
-        if (code.length >= 8) {
-          promptNewMasterData(code, format);
-        }
+        promptNewMasterData(code, format);
       }
 
       function promptNewMasterData(code, format) {
@@ -1556,7 +1578,7 @@
         resText.innerText = isHD ? "HD" : "SD";
         if (isHD) {
           btnRes.classList.remove("active");
-          Toast.fire({ icon: "info", title: "Mode HD Aktif (Lebih Tajam)" });
+          Toast.fire({ icon: "info", title: "Mode HD Aktif (Akurat)" });
         } else {
           btnRes.classList.add("active");
           Toast.fire({ icon: "info", title: "Mode SD Aktif (Lebih Cepat)" });
@@ -1618,20 +1640,20 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // KEMBALI KE CONSTRAINTS KAMERA PALING AMAN DAN STABIL SEPERTI VERSI SEBELUMNYA
+            // PERBAIKAN: Constraint Universal agar Kamera Berjalan Lancar di Semua Perangkat
             let constraints;
             if (isHD) {
               constraints = {
                 video: {
-                  facingMode: { ideal: currentCam },
-                  width: { ideal: 4096 },
-                  height: { ideal: 2160 },
+                  facingMode: currentCam,
+                  width: { ideal: 1920 },
+                  height: { ideal: 1080 },
                 },
               };
             } else {
               constraints = {
                 video: {
-                  facingMode: { ideal: currentCam },
+                  facingMode: currentCam,
                   width: { ideal: 1280 },
                   height: { ideal: 720 },
                 },
@@ -1677,7 +1699,7 @@
               scanLoopFrame = requestAnimationFrame(detectLoop);
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 10;
+              zxingReader.timeBetweenDecodingAttempts = 40; // Diperlonggar ke 40ms agar video stream tidak nge-lag
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
