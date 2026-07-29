@@ -44,16 +44,16 @@
         --danger: #e11d48;
 
         --glass-bg: rgba(15, 23, 42, 0.2);
-        --glass-panel: rgba(15, 23, 42, 0.45);
-        --glass-border: rgba(255, 255, 255, 0.15);
-        --glass-blur: blur(12px);
+        --glass-panel: rgba(15, 23, 42, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --glass-blur: blur(16px);
 
         --text-primary: #f8fafc;
         --text-secondary: #cbd5e1;
         --text-muted: #94a3b8;
 
-        --radius-xl: 24px;
-        --radius-lg: 18px;
+        --radius-xl: 20px;
+        --radius-lg: 16px;
         --radius-md: 12px;
         --radius-sm: 8px;
       }
@@ -97,7 +97,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(2, 6, 23, 0.35);
+        background: rgba(2, 6, 23, 0.45);
         z-index: -1;
       }
 
@@ -108,7 +108,7 @@
       }
 
       .topbar {
-        background: rgba(15, 23, 42, 0.6);
+        background: rgba(15, 23, 42, 0.85);
         backdrop-filter: var(--glass-blur);
         -webkit-backdrop-filter: var(--glass-blur);
         border-bottom: 1px solid var(--glass-border);
@@ -120,7 +120,6 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
         gap: 15px;
         overflow: hidden;
       }
@@ -132,7 +131,6 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        letter-spacing: 0.5px;
         white-space: nowrap;
         z-index: 2;
         flex-shrink: 0;
@@ -141,7 +139,6 @@
       .topbar-title i {
         color: #38bdf8;
         font-size: 1.2rem;
-        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
       }
 
       .typewriter-container {
@@ -174,8 +171,6 @@
         font-family: "Space Grotesk", monospace;
         font-size: 0.75rem;
         font-weight: 700;
-        letter-spacing: 1px;
-        text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
         animation: marquee 12s linear infinite;
         padding-left: 100%;
       }
@@ -189,101 +184,63 @@
         }
       }
 
+      /* =========================================================
+         MENU BAWAH DENGAN SVG NATIVE (STANDAR APLIKASI PROFESIONAL)
+         ========================================================= */
       .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        max-width: 100%;
-        background: rgba(8, 12, 23, 0.85);
-        backdrop-filter: blur(48px) saturate(250%);
-        -webkit-backdrop-filter: blur(48px) saturate(250%);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 30px 30px 0 0;
+        background: #0f172a;
+        border-top: 1px solid #1e293b;
         display: flex;
         justify-content: space-around;
-        padding: 16px 10px calc(16px + env(safe-area-inset-bottom));
+        padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
         z-index: 9999;
-        box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.8);
       }
 
       .nav-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 6px;
-        cursor: pointer;
-        flex: 1;
-        padding: 4px;
+        gap: 5px;
+        color: #64748b;
         text-decoration: none;
-        position: relative;
-        z-index: 2;
+        width: 25%;
+        cursor: pointer;
+        transition: all 0.2s ease;
       }
 
-      .nav-item::before {
-        content: "";
-        position: absolute;
-        top: -6px;
-        width: 54px;
-        height: 54px;
-        background: linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.25),
-          rgba(59, 130, 246, 0.05)
-        );
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        border-radius: 18px;
-        box-shadow:
-          0 4px 15px rgba(56, 189, 248, 0.3),
-          inset 0 2px 5px rgba(255, 255, 255, 0.1);
-        z-index: -1;
-        opacity: 0;
-        transform: scale(0.5) translateY(10px);
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-
-      .nav-item .nav-img {
-        width: 28px;
-        height: 28px;
-        object-fit: contain;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: 2;
-        opacity: 0.4;
-        filter: grayscale(100%) contrast(0.8);
+      .nav-item svg {
+        width: 26px;
+        height: 26px;
+        fill: currentColor;
+        transition:
+          transform 0.2s ease,
+          fill 0.2s ease;
       }
 
       .nav-item span {
         font-size: 0.65rem;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-        color: var(--text-muted);
-        transition: all 0.3s ease;
-        z-index: 2;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        transition: color 0.2s ease;
       }
 
-      .nav-item.active::before {
-        opacity: 1;
-        transform: scale(1) translateY(-8px);
-      }
-
-      .nav-item.active .nav-img {
-        transform: translateY(-8px) scale(1.25);
-        opacity: 1;
-        filter: grayscale(0%) contrast(1.1)
-          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
-      }
-
-      .nav-item.active span {
+      .nav-item.active {
         color: #38bdf8;
-        transform: translateY(2px);
-        text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      }
+
+      .nav-item.active svg {
+        transform: scale(1.1);
+        filter: drop-shadow(0 2px 6px rgba(56, 189, 248, 0.4));
       }
 
       .view-page {
         display: none;
         opacity: 0;
-        animation: smoothFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        animation: smoothFade 0.3s ease forwards;
       }
       .view-page.active {
         display: flex;
@@ -294,17 +251,17 @@
       @keyframes smoothFade {
         0% {
           opacity: 0;
-          transform: translateY(10px) scale(0.98);
+          transform: translateY(5px);
         }
         100% {
           opacity: 1;
-          transform: translateY(0) scale(1);
+          transform: translateY(0);
         }
       }
 
       .container {
         padding: 20px 16px;
-        padding-bottom: calc(140px + env(safe-area-inset-bottom));
+        padding-bottom: calc(100px + env(safe-area-inset-bottom));
         max-width: 800px;
         margin: 0 auto;
         width: 100%;
@@ -318,26 +275,8 @@
         border-radius: var(--radius-xl);
         padding: 24px 20px;
         border: 1px solid var(--glass-border);
-        box-shadow:
-          0 25px 50px -12px rgba(0, 0, 0, 0.5),
-          inset 0 1px 0px rgba(255, 255, 255, 0.15);
         position: relative;
         overflow: hidden;
-      }
-
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.4),
-          transparent
-        );
       }
 
       .card-header {
@@ -348,21 +287,14 @@
         align-items: center;
         gap: 12px;
         color: #ffffff;
-        letter-spacing: 0.5px;
       }
 
       .card-header i {
-        color: #ffffff;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.25),
-          rgba(255, 255, 255, 0.05)
-        );
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.15);
         padding: 8px 10px;
         border-radius: var(--radius-sm);
         font-size: 0.95rem;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
 
       .scanner-wrapper {
@@ -382,7 +314,6 @@
         align-items: center;
         justify-content: center;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       }
 
       #videoElement {
@@ -403,7 +334,6 @@
         z-index: 5;
         box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.65);
         display: none;
-        transition: border-color 0.3s ease;
       }
 
       .targeting-box::before,
@@ -416,7 +346,6 @@
         height: 30px;
         border-color: #38bdf8;
         border-style: solid;
-        filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.7));
       }
 
       .targeting-box::before {
@@ -456,7 +385,7 @@
         right: 5%;
         height: 2px;
         background: #f43f5e;
-        box-shadow: 0 0 15px 3px rgba(244, 63, 94, 0.8);
+        box-shadow: 0 0 10px 2px rgba(244, 63, 94, 0.8);
         display: none;
         z-index: 10;
         animation: scanAnim 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
@@ -499,22 +428,17 @@
         gap: 8px;
         align-items: center;
         justify-content: center;
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
+        background: #1e293b;
         padding: 8px 12px;
         border-radius: 100px;
-        margin-top: -30px;
+        margin-top: -25px;
         position: relative;
         z-index: 20;
-        box-shadow:
-          0 15px 30px rgba(0, 0, 0, 0.7),
-          inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.15);
         width: max-content;
         max-width: 95vw;
         margin-left: auto;
         margin-right: auto;
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .btn {
@@ -526,7 +450,7 @@
         align-items: center;
         justify-content: center;
         color: var(--text-primary);
-        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: transform 0.2s ease;
         flex-shrink: 0;
       }
       .btn:active {
@@ -537,42 +461,27 @@
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: #334155;
         font-size: 1.05rem;
-      }
-      .btn-icon:hover {
-        background: rgba(255, 255, 255, 0.15);
       }
       .btn-icon.active {
         background: var(--warning);
         color: #000;
-        border-color: var(--warning);
-        box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
       }
       .btn-res.active {
         background: var(--danger);
         color: #fff;
-        border-color: var(--danger);
-        box-shadow: 0 0 20px rgba(225, 29, 72, 0.6);
       }
 
       .btn-scan {
         padding: 0 20px;
         height: 44px;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-hover)
-        );
+        background: var(--primary);
         border-radius: 100px;
         letter-spacing: 1px;
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.3);
       }
       .btn-scan.stop {
-        background: linear-gradient(135deg, var(--danger), #be123c);
-        box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
+        background: var(--danger);
       }
 
       .input-group {
@@ -596,15 +505,10 @@
         font-weight: 600;
         background: rgba(0, 0, 0, 0.4);
         color: #ffffff;
-        transition: all 0.3s ease;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
       }
       .form-control:focus {
         border-color: #38bdf8;
         background: rgba(0, 0, 0, 0.6);
-        box-shadow:
-          0 0 0 4px rgba(56, 189, 248, 0.2),
-          inset 0 2px 6px rgba(0, 0, 0, 0.3);
       }
 
       .manual-input-wrapper {
@@ -618,8 +522,6 @@
         background: var(--primary);
         border-radius: var(--radius-md);
         padding: 0 24px;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
       .table-wrapper {
@@ -629,7 +531,6 @@
         border-radius: var(--radius-md);
         background: rgba(0, 0, 0, 0.35);
         border: 1px solid var(--glass-border);
-        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
       }
       table {
         width: 100%;
@@ -683,7 +584,6 @@
         height: 36px;
         border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -692,7 +592,6 @@
         color: #ffffff;
         background: var(--danger);
         border-color: var(--danger);
-        box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
       }
 
       .export-grid {
@@ -701,7 +600,6 @@
         gap: 12px;
         margin-bottom: 28px;
       }
-
       .btn-export-big {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--glass-border);
@@ -712,36 +610,12 @@
         flex-direction: column;
         align-items: center;
         gap: 12px;
-        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        position: relative;
-        overflow: hidden;
       }
-      .btn-export-big:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.3);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      }
-
       .icon-original {
         width: 60px;
         height: 60px;
-        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
-        z-index: 2;
-        transition: transform 0.3s;
         object-fit: contain;
         border-radius: 12px;
-      }
-      .btn-export-big:hover .icon-original {
-        transform: scale(1.1);
-      }
-      .btn-export-big div {
-        font-size: 0.85rem;
-        font-weight: 800;
-        color: #ffffff;
-        letter-spacing: 0.5px;
-        z-index: 2;
-        text-align: center;
       }
 
       .btn-danger-zone {
@@ -760,45 +634,27 @@
         color: #ffe4e6;
         font-size: 0.85rem;
       }
-      .btn-danger-zone:hover {
-        background: rgba(225, 29, 72, 0.3);
-        border-color: rgba(225, 29, 72, 0.6);
-      }
 
       @media (max-width: 600px) {
         .filter-grid {
           grid-template-columns: 1fr;
           gap: 12px;
         }
-        .topbar-title {
-          font-size: 0.95rem;
-        }
-      }
-      @media (min-width: 601px) {
-        .filter-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
       }
 
+      /* SCROLL FIX POPUP */
       div:where(.swal2-container) {
         z-index: 10000 !important;
       }
       div:where(.swal2-container) div:where(.swal2-popup) {
-        background: rgba(15, 23, 42, 0.95) !important;
-        backdrop-filter: blur(40px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
-        color: var(--text-primary) !important;
-        border-radius: var(--radius-xl) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        box-shadow:
-          0 30px 60px rgba(0, 0, 0, 0.7),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-        font-family: "Plus Jakarta Sans", sans-serif !important;
+        background: #0f172a !important;
+        color: #f8fafc !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 20px !important;
         width: 90% !important;
         max-width: 400px !important;
         padding: 20px !important;
-        max-height: 80vh !important;
+        max-height: 85vh !important;
         overflow-y: auto !important;
       }
       .swal2-input {
@@ -812,15 +668,15 @@
 
       .hdr-b1 i {
         color: #818cf8;
-        background: rgba(129, 140, 248, 0.2);
+        background: rgba(129, 140, 248, 0.15);
       }
       .hdr-b2 i {
         color: #38bdf8;
-        background: rgba(56, 189, 248, 0.2);
+        background: rgba(56, 189, 248, 0.15);
       }
       .hdr-b3 i {
         color: #fb7185;
-        background: rgba(251, 113, 133, 0.2);
+        background: rgba(251, 113, 133, 0.15);
       }
 
       .pull-indicator {
@@ -829,18 +685,15 @@
         font-size: 0.8rem;
         padding: 16px;
         opacity: 0;
-        transition: opacity 0.3s;
         position: absolute;
         top: 70px;
         width: 100%;
         z-index: 90;
         font-weight: 700;
-        letter-spacing: 1px;
       }
     </style>
   </head>
   <body>
-    <!-- TOP NAVIGATION -->
     <div class="topbar">
       <div class="topbar-title">
         <i class="fas fa-qrcode"></i> PT. Daya Sakti Niaga
@@ -862,7 +715,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i> BISMILLAH LANCAR!!!
+            <i class="fas fa-camera-viewfinder"></i> SCAN YAHHH
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -1189,7 +1042,7 @@
           <hr
             style="
               border: none;
-              border-top: 1px solid rgba(255, 255, 255, 0.15);
+              border-top: 1px solid rgba(255, 255, 255, 0.1);
               margin: 30px 0 20px 0;
             "
           />
@@ -1206,39 +1059,38 @@
     </div>
 
     <!-- =========================================================
-         BOTTOM NAVIGATION DENGAN SET GAMBAR 3D MODERN + ANIMASI GLOW
+         BOTTOM NAVIGATION MENGGUNAKAN PURE NATIVE SVG ICONS 
+         Sangat tajam, anti error, dan standar UI Aplikasi Modern
          ========================================================= -->
     <nav class="bottom-nav">
       <a class="nav-item active" onclick="switchPage('view-scan', this)">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/8244/8244509.png"
-          class="nav-img"
-          alt="Scanner"
-        />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M4 4h4v2H6v2H4V4zm16 0h-4v2h2v2h2V4zM4 20h4v-2H6v-2H4v4zm16 0h-4v-2h2v-2h2v4zM8 8h2v8H8V8zm4 0h1v8h-1V8zm2 0h2v8h-2V8z"
+          />
+        </svg>
         <span>SCANNER</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-session', this)">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/8244/8244506.png"
-          class="nav-img"
-          alt="Hari Ini"
-        />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+          />
+        </svg>
         <span>HARI INI</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-database', this)">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/8244/8244533.png"
-          class="nav-img"
-          alt="Database"
-        />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M12 2C6.48 2 2 4.02 2 6.5S6.48 11 12 11s10-2.02 10-4.5S17.52 2 12 2zm0 11.5c-5.52 0-10-2.02-10-4.5V13c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5V9c0 2.48-4.48 4.5-10 4.5zm0 6c-5.52 0-10-2.02-10-4.5V19c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-4c0 2.48-4.48 4.5-10 4.5z"
+          />
+        </svg>
         <span>DATABASE</span>
       </a>
       <a class="nav-item" onclick="switchPage('view-export', this)">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/9502/9502047.png"
-          class="nav-img"
-          alt="Unduh"
-        />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+        </svg>
         <span>UNDUH</span>
       </a>
     </nav>
@@ -1257,6 +1109,7 @@
       let streamTrack = null;
       let scanLoopFrame = null;
       let audioCtx = null;
+      let isProcessingBarcode = false;
 
       const video = document.getElementById("videoElement");
       const Toast = Swal.mixin({
@@ -1331,6 +1184,7 @@
         if (pageId === "view-database") renderDatabase();
       }
 
+      // Deteksi Perangkat untuk Penyesuaian Kamera
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1338,20 +1192,15 @@
       let nativeDetector = null;
       let zxingReader = null;
 
-      if (hasNativeScanner && !isIOS) {
-        nativeDetector = new BarcodeDetector({
-          formats: [
-            "code_128",
-            "code_39",
-            "code_93",
-            "ean_13",
-            "ean_8",
-            "upc_a",
-            "upc_e",
-            "itf",
-            "codabar",
-          ],
-        });
+      // 🚀 UPGRADE MESIN 1: FOKUS PENCARIAN BARCODE (Agar CPU Tidak Lag)
+      if (hasNativeScanner) {
+        try {
+          nativeDetector = new BarcodeDetector({
+            formats: ["code_128", "code_39", "ean_13", "upc_a", "itf"],
+          });
+        } catch (e) {
+          nativeDetector = null;
+        }
       }
 
       function getZXingHints() {
@@ -1363,12 +1212,8 @@
               [
                 ZXing.BarcodeFormat.CODE_128,
                 ZXing.BarcodeFormat.CODE_39,
-                ZXing.BarcodeFormat.CODE_93,
-                ZXing.BarcodeFormat.ITF,
-                ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.EAN_13,
-                ZXing.BarcodeFormat.EAN_8,
-                ZXing.BarcodeFormat.UPC_A,
+                ZXing.BarcodeFormat.ITF,
               ],
             ],
           ]);
@@ -1390,6 +1235,7 @@
 
       function parseBarcode1(raw) {
         let cleanRaw = raw.trim().toUpperCase();
+        // LOGIKA PENCOCOKAN BARCODE 1 (FOTO ANDA: 86000000000300932A0056290001150024)
         if (cleanRaw.startsWith("86") && cleanRaw.length >= 24) {
           try {
             const p_str = cleanRaw.slice(-4);
@@ -1453,11 +1299,7 @@
             golongan: gol,
           };
         }
-        if (
-          cleanCode.startsWith("159") ||
-          cleanCode.startsWith("1001") ||
-          cleanCode.startsWith("101")
-        ) {
+        if (cleanCode.startsWith("159") || cleanCode.startsWith("10")) {
           return {
             jenisBarcode: "Barcode 2",
             panjang: 305,
@@ -1471,13 +1313,16 @@
       }
 
       function processBarcodeDetected(rawCode, format) {
-        // PERBAIKAN: Blokir Partial Scan agar Popup Manual tidak keluar sembarangan
+        // 🚀 UPGRADE KEAKURATAN: Membersihkan spasi, membiarkan Huruf dan Angka.
         let code = rawCode
           .trim()
           .toUpperCase()
           .replace(/O/g, "0")
-          .replace(/[^a-zA-Z0-9]/g, "");
-        if (code.length < 18) return;
+          .replace(/[^A-Z0-9-]/g, "");
+
+        // SYARAT MUTLAK: Barcode di foto Anda ada 34 karakter.
+        // Jika kamera hanya membaca sebagian (misal 12 huruf saja), abaikan total agar tidak muncul popup manual!
+        if (code.length < 15) return;
 
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
@@ -1489,12 +1334,14 @@
           return;
         }
 
+        // Cek Database Memori
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
 
+        // Paksa Masuk Barcode 1 (yang ada di Foto Anda)
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
@@ -1502,6 +1349,7 @@
           return;
         }
 
+        // Paksa Masuk Barcode 2 dan 3 Otomatis
         let autoData = autoParseBarcode2And3(code);
         if (autoData) {
           scannedCodesSet.add(code);
@@ -1509,6 +1357,8 @@
           return;
         }
 
+        // JIKA BARCODE BENAR-BENAR PANJANG TAPI TIDAK DIKENALI
+        triggerRaguFeedback();
         promptNewMasterData(code, format);
       }
 
@@ -1520,9 +1370,9 @@
         else if (code.startsWith("86")) predictedType = "Barcode 1";
 
         Swal.fire({
-          title: "Master Data Baru!",
+          title: "Data Tidak Dikenali - Input Manual",
           html: `
-            <div style="font-size:0.85rem; color:#38bdf8; margin-bottom:15px; text-align:left;">Sistem mendeteksi Nomor Barcode yang belum dikenali:<br><b style="color:white; font-size:1rem; letter-spacing: 1px; word-break: break-all;">${code}</b><br><br>Silakan masukkan dimensinya 1x saja. Sistem akan mengingatnya selamanya.</div>
+            <div style="font-size:0.85rem; color:#f59e0b; margin-bottom:15px; text-align:left;">Sistem menangkap barcode yang belum tersimpan di memori:<br><b style="color:white; font-size:1rem; letter-spacing: 1px; word-break: break-all;">${code}</b><br><br>Silakan masukkan ukurannya 1x saja. Sistem akan otomatis memahaminya di kemudian hari.</div>
             <select id="m-jenis" class="swal2-input" style="width: 90%; font-size:14px; margin-bottom:8px;">
               <option value="Barcode 3" ${predictedType === "Barcode 3" ? "selected" : ""}>Ini Barcode 3</option>
               <option value="Barcode 2" ${predictedType === "Barcode 2" ? "selected" : ""}>Ini Barcode 2</option>
@@ -1578,7 +1428,7 @@
         resText.innerText = isHD ? "HD" : "SD";
         if (isHD) {
           btnRes.classList.remove("active");
-          Toast.fire({ icon: "info", title: "Mode HD Aktif (Akurat)" });
+          Toast.fire({ icon: "info", title: "Mode HD Aktif (Lebih Tajam)" });
         } else {
           btnRes.classList.add("active");
           Toast.fire({ icon: "info", title: "Mode SD Aktif (Lebih Cepat)" });
@@ -1640,29 +1490,19 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // PERBAIKAN: Constraint Universal agar Kamera Berjalan Lancar di Semua Perangkat
-            let constraints;
+            // 🚀 UPGRADE KAMERA: Tanpa rasio kaku agar Sensor Kamera iPhone & Android natural (Tidak Gegeng)
+            let videoConstraints = { facingMode: { ideal: currentCam } };
             if (isHD) {
-              constraints = {
-                video: {
-                  facingMode: currentCam,
-                  width: { ideal: 1920 },
-                  height: { ideal: 1080 },
-                },
-              };
+              videoConstraints.width = { ideal: 1920 }; // HD Universal
             } else {
-              constraints = {
-                video: {
-                  facingMode: currentCam,
-                  width: { ideal: 1280 },
-                  height: { ideal: 720 },
-                },
-              };
+              videoConstraints.width = { ideal: 1280 }; // SD Ringan
             }
 
             let stream;
             try {
-              stream = await navigator.mediaDevices.getUserMedia(constraints);
+              stream = await navigator.mediaDevices.getUserMedia({
+                video: videoConstraints,
+              });
             } catch (e) {
               stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: "environment" },
@@ -1675,31 +1515,52 @@
             video.srcObject = stream;
             streamTrack = stream.getVideoTracks()[0];
 
+            try {
+              const capabilities = streamTrack.getCapabilities();
+              if (
+                capabilities.focusMode &&
+                capabilities.focusMode.includes("continuous")
+              ) {
+                await streamTrack.applyConstraints({
+                  advanced: [{ focusMode: "continuous" }],
+                });
+              }
+            } catch (err) {}
+
             await new Promise((resolve) => {
               video.onloadedmetadata = () => resolve();
             });
             await video.play();
 
+            // 🚀 UPGRADE THREAD-LOCK: Membaca barcode tanpa membuat layar macet
             if (nativeDetector) {
               const detectLoop = async () => {
                 if (!isScanning) return;
-                try {
-                  const barcodes = await nativeDetector.detect(video);
-                  if (barcodes.length > 0)
-                    processBarcodeDetected(
-                      barcodes[0].rawValue,
-                      barcodes[0].format.toUpperCase(),
-                    );
-                } catch (e) {}
+                if (
+                  video.readyState === video.HAVE_ENOUGH_DATA &&
+                  !isProcessingBarcode
+                ) {
+                  isProcessingBarcode = true;
+                  try {
+                    const barcodes = await nativeDetector.detect(video);
+                    if (barcodes.length > 0) {
+                      processBarcodeDetected(
+                        barcodes[0].rawValue,
+                        barcodes[0].format.toUpperCase(),
+                      );
+                    }
+                  } catch (e) {}
+                  isProcessingBarcode = false;
+                }
                 setTimeout(() => {
                   if (isScanning)
                     scanLoopFrame = requestAnimationFrame(detectLoop);
-                }, 10);
+                }, 80);
               };
               scanLoopFrame = requestAnimationFrame(detectLoop);
             } else {
               zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 40; // Diperlonggar ke 40ms agar video stream tidak nge-lag
+              zxingReader.timeBetweenDecodingAttempts = 150;
               zxingReader.decodeFromStream(
                 stream,
                 "videoElement",
@@ -1789,6 +1650,25 @@
           box.style.borderColor = "#38bdf8";
           box.style.filter = "none";
         }, 150);
+      }
+
+      function triggerRaguFeedback() {
+        if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        if (audioCtx) {
+          try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(1500, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.01);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.1);
+          } catch (e) {}
+        }
       }
 
       function triggerErrorFeedback() {
