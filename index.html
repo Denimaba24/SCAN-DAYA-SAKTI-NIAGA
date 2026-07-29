@@ -24,6 +24,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <!-- Library ZXing Scanner -->
     <script
       type="text/javascript"
       src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"
@@ -184,6 +185,9 @@
         }
       }
 
+      /* =========================================================
+         MENU BAWAH PROFESIONAL DENGAN GAMBAR (PNG)
+         ========================================================= */
       .bottom-nav {
         position: fixed;
         bottom: 0;
@@ -609,6 +613,7 @@
         align-items: center;
         gap: 12px;
       }
+
       .icon-original {
         width: 60px;
         height: 60px;
@@ -640,6 +645,7 @@
         }
       }
 
+      /* SCROLL FIX POPUP */
       div:where(.swal2-container) {
         z-index: 10000 !important;
       }
@@ -712,7 +718,7 @@
       <div id="view-scan" class="view-page active">
         <div class="card">
           <div class="card-header">
-            <i class="fas fa-camera-viewfinder"></i>Aminnn!!
+            <i class="fas fa-camera-viewfinder"></i> SCANNNNNNN
           </div>
           <div class="scanner-wrapper">
             <div class="scanner-container" id="scannerBox">
@@ -1108,9 +1114,6 @@
       let scanLoopFrame = null;
       let audioCtx = null;
 
-      // Kunci Anti-Lag: Mencegah CPU HP overload saat baca frame
-      let isProcessingBarcode = false;
-
       const video = document.getElementById("videoElement");
       const Toast = Swal.mixin({
         toast: true,
@@ -1184,7 +1187,9 @@
         if (pageId === "view-database") renderDatabase();
       }
 
-      // Deteksi Native Hardware Scanner jika tersedia
+      // =========================================================
+      // MESIN PEMINDAI BARCODE (DUAL ENGINE AUTO FALLBACK)
+      // =========================================================
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -1192,18 +1197,7 @@
       let nativeDetector = null;
       let zxingReader = null;
 
-      // 🚀 UPGRADE MESIN 1: FOKUS KE CODE 128 SAJA AGAR SUPER CEPAT
-      if (hasNativeScanner) {
-        try {
-          nativeDetector = new BarcodeDetector({
-            formats: ["code_128", "code_39", "ean_13", "upc_a"],
-          });
-        } catch (e) {
-          nativeDetector = null;
-        }
-      }
-
-      // 🚀 UPGRADE MESIN 2: FOKUS ZXING KE CODE 128 SAJA
+      // Fitur Cerdas untuk Menjamin ZXing Terbaca Semua Format
       function getZXingHints() {
         try {
           return new Map([
@@ -1213,7 +1207,13 @@
               [
                 ZXing.BarcodeFormat.CODE_128,
                 ZXing.BarcodeFormat.CODE_39,
+                ZXing.BarcodeFormat.CODE_93,
+                ZXing.BarcodeFormat.ITF,
+                ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.EAN_13,
+                ZXing.BarcodeFormat.EAN_8,
+                ZXing.BarcodeFormat.UPC_A,
+                ZXing.BarcodeFormat.UPC_E,
               ],
             ],
           ]);
@@ -1235,7 +1235,7 @@
 
       function parseBarcode1(raw) {
         let cleanRaw = raw.trim().toUpperCase();
-        // Berdasarkan gambar: 86000000000300932A0056290001150024
+        // LOGIKA PENCOCOKAN BARCODE FOTO ANDA
         if (cleanRaw.startsWith("86") && cleanRaw.length >= 24) {
           try {
             const p_str = cleanRaw.slice(-4);
@@ -1270,6 +1270,7 @@
 
       function autoParseBarcode2And3(code) {
         let cleanCode = code.trim().toUpperCase();
+
         if (
           cleanCode.startsWith("111") ||
           cleanCode.startsWith("112") ||
@@ -1299,6 +1300,7 @@
             golongan: gol,
           };
         }
+
         if (cleanCode.startsWith("159") || cleanCode.startsWith("10")) {
           return {
             jenisBarcode: "Barcode 2",
@@ -1313,16 +1315,15 @@
       }
 
       function processBarcodeDetected(rawCode, format) {
-        // 🚀 UPGRADE KEAKURATAN: Jangan hapus karakter sembarangan selain O->0, karena barcode Anda punya kombinasi huruf & angka
+        // PERBAIKAN: Pembersihan Karakter Hanya Huruf, Angka & Tanda Strip
         let code = rawCode
           .trim()
           .toUpperCase()
           .replace(/O/g, "0")
-          .replace(/[^A-Z0-9]/g, "");
+          .replace(/[^A-Z0-9-]/g, "");
 
-        // SYARAT MUTLAK: Barcode di foto Anda ada 34 karakter.
-        // Kita cegah bacaan prematur/separuh jalan dengan memblokir hasil di bawah 8 digit.
-        if (code.length < 8) return;
+        // TOLAK TEGAS SPAM (Mencegah Kamera yang Sedang Mencari Fokus dari Membaca Barcode Sepotong)
+        if (code.length < 6) return;
 
         if (scannedCodesSet.has(code)) {
           const now = Date.now();
@@ -1334,14 +1335,14 @@
           return;
         }
 
-        // Cek Database Memori
+        // Cek Master
         if (masterDB[code]) {
           scannedCodesSet.add(code);
           simpanData(code, format, masterDB[code]);
           return;
         }
 
-        // Paksa Masuk Barcode 1 (yang ada di foto Anda)
+        // Pengecekan Barcode Rapat Anda (Barcode 1)
         let b1Data = parseBarcode1(code);
         if (b1Data) {
           scannedCodesSet.add(code);
@@ -1349,7 +1350,7 @@
           return;
         }
 
-        // Paksa Masuk Barcode 2 dan 3 Otomatis
+        // Pengecekan Otomatis (Barcode 2 & 3)
         let autoData = autoParseBarcode2And3(code);
         if (autoData) {
           scannedCodesSet.add(code);
@@ -1357,6 +1358,7 @@
           return;
         }
 
+        // Hanya Muncul Popup JIKA format benar-benar panjang dan tidak dikenali di atas
         promptNewMasterData(code, format);
       }
 
@@ -1446,6 +1448,23 @@
         }
       }
 
+      function startZXingEngine(stream) {
+        if (!isScanning) return;
+        zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
+        // JEDA 150ms: Titik emas agar video tidak lag dan scan tetap akurat di HP manapun.
+        zxingReader.timeBetweenDecodingAttempts = 150;
+        zxingReader.decodeFromStream(stream, "videoElement", (result, err) => {
+          if (result && isScanning) {
+            processBarcodeDetected(
+              result.getText(),
+              result.getBarcodeFormat
+                ? result.getBarcodeFormat().toString()
+                : "ZXING",
+            );
+          }
+        });
+      }
+
       async function toggleScan() {
         const btn = document.getElementById("btnAction");
         const placeholder = document.getElementById("placeholderMsg");
@@ -1488,11 +1507,11 @@
             btn.classList.add("stop");
             isScanning = true;
 
-            // 🚀 UPGRADE KAMERA: Resolusi 1080p dan 720p yang tepat agar Barcode Rapat bisa jelas dibaca tanpa membuat HP ngelag.
+            // RESOLUSI AMAN ANTI DISTORSI
             let videoConstraints = { facingMode: { ideal: currentCam } };
             if (isHD) {
-              videoConstraints.width = { ideal: 1920 };
-              videoConstraints.height = { ideal: 1080 };
+              videoConstraints.width = { ideal: 1920, min: 1280 };
+              videoConstraints.height = { ideal: 1080, min: 720 };
             } else {
               videoConstraints.width = { ideal: 1280 };
               videoConstraints.height = { ideal: 720 };
@@ -1515,54 +1534,74 @@
             video.srcObject = stream;
             streamTrack = stream.getVideoTracks()[0];
 
+            try {
+              const capabilities = streamTrack.getCapabilities();
+              if (
+                capabilities.focusMode &&
+                capabilities.focusMode.includes("continuous")
+              ) {
+                await streamTrack.applyConstraints({
+                  advanced: [{ focusMode: "continuous" }],
+                });
+              }
+            } catch (err) {}
+
             await new Promise((resolve) => {
               video.onloadedmetadata = () => resolve();
             });
             await video.play();
 
-            // 🚀 UPGRADE THREAD-LOCK: Baca Barcode jauh lebih lancar tanpa macet (60FPS Smooth)
-            if (nativeDetector) {
-              const detectLoop = async () => {
+            // PENGATURAN MESIN CERDAS (Auto-Switch Native -> ZXing)
+            let useNative = false;
+            if ("BarcodeDetector" in window && !isIOS) {
+              try {
+                nativeDetector = new BarcodeDetector({
+                  formats: [
+                    "code_128",
+                    "code_39",
+                    "code_93",
+                    "ean_13",
+                    "ean_8",
+                    "upc_a",
+                    "upc_e",
+                    "itf",
+                    "codabar",
+                  ],
+                });
+                useNative = true;
+              } catch (e) {
+                useNative = false;
+              }
+            }
+
+            if (useNative) {
+              let nativeFails = 0;
+              const runNativeLoop = async () => {
                 if (!isScanning) return;
-                if (
-                  video.readyState === video.HAVE_ENOUGH_DATA &&
-                  !isProcessingBarcode
-                ) {
-                  isProcessingBarcode = true;
-                  try {
-                    const barcodes = await nativeDetector.detect(video);
-                    if (barcodes.length > 0) {
-                      processBarcodeDetected(
-                        barcodes[0].rawValue,
-                        barcodes[0].format.toUpperCase(),
-                      );
-                    }
-                  } catch (e) {}
-                  isProcessingBarcode = false;
-                }
-                // Delay 50ms (Optimal Speed vs Performance)
-                setTimeout(() => {
-                  if (isScanning)
-                    scanLoopFrame = requestAnimationFrame(detectLoop);
-                }, 50);
-              };
-              scanLoopFrame = requestAnimationFrame(detectLoop);
-            } else {
-              zxingReader = new ZXing.BrowserMultiFormatReader(getZXingHints());
-              zxingReader.timeBetweenDecodingAttempts = 50; // Kencang tapi tidak merusak CPU
-              zxingReader.decodeFromStream(
-                stream,
-                "videoElement",
-                (result, err) => {
-                  if (result)
+                try {
+                  const barcodes = await nativeDetector.detect(video);
+                  if (barcodes.length > 0) {
                     processBarcodeDetected(
-                      result.getText(),
-                      result.getBarcodeFormat
-                        ? result.getBarcodeFormat().toString()
-                        : "UNKNOWN",
+                      barcodes[0].rawValue,
+                      barcodes[0].format.toUpperCase(),
                     );
-                },
-              );
+                  }
+                  nativeFails = 0;
+                } catch (e) {
+                  nativeFails++;
+                  if (nativeFails > 3) {
+                    useNative = false;
+                    startZXingEngine(stream);
+                    return;
+                  }
+                }
+                if (isScanning && useNative) {
+                  setTimeout(runNativeLoop, 150);
+                }
+              };
+              runNativeLoop();
+            } else {
+              startZXingEngine(stream);
             }
           } catch (err) {
             Swal.fire(
